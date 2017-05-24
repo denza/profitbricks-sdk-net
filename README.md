@@ -121,20 +121,25 @@ Connecting to ProfitBricks is handled by first setting up your authentication cr
 To setup your credentials you will have to provide an instance of the Configuration class provided with your username and password
 
     public static Configuration Configuration
+    {
+        get
         {
-            get
+            return new Configuration
             {
-                return new Configuration
-                {
-                    Username = Environment.GetEnvironmentVariable("PROFITBRICKS_USERNAME"),
-                    Password = Environment.GetEnvironmentVariable("PROFITBRICKS_PASSWORD"),
+                Username = Environment.GetEnvironmentVariable("PROFITBRICKS_USERNAME"),
+                Password = Environment.GetEnvironmentVariable("PROFITBRICKS_PASSWORD"),
 
-                };
-            }
-        }
+            };
+         }
+    }
 
+You can choose to read them from the environment variables like in the example above, or just provide the string value for *Username* and *Password*.
 
-You can choose to read them from the environment variables like in the example above, or just provide the strting value for *Username* and *Password*.
+    var configuration = new Configuration
+    {
+        Username = "username@domain.tld",
+        Password = "strong_pwd"
+    };
 
 You can now use create an instance of any API class and pass the Configuration property for any future request.
 
@@ -142,21 +147,21 @@ You can now use create an instance of any API class and pass the Configuration p
 
 ## Reference
 
-This section provides details on all the available operations and the parameters they accept. Brief code snippets demonstrating usage are also included.
+This section provides details on all the available operations and the arguments they accept. Brief code snippets demonstrating usage are also included.
 
 ### Data Centers
 
-Virtual data centers (VDCs) are the foundation of the ProfitBricks platform. VDCs act as logical containers for all other objects you will be creating, e.g., servers. You can provision as many VDCs as you want. VDCs have their own private network and are logically segmented from each other to create isolation.
+Virtual Data Centers (VDCs) are the foundation of the ProfitBricks platform. VDCs act as logical containers for all other objects you will be creating, e.g., servers. You can provision as many VDCs as you want. VDCs have their own private network and are logically segmented from each other to create isolation.
 
-Create an instace of the api class:
+Create an instance of the API class:
 
-         DataCenterApi dcApi = new DataCenterApi(Configuration);
+    DataCenterApi dcApi = new DataCenterApi(Configuration);
 
 #### List Data Centers
 
 This operation will list all currently provisioned VDCs that your account credentials provide access to.
 
-The optional `depth` parameter defines the level, one being the least and five being the most, of information returned with the response.
+The optional `depth` argument defines the level, one being the least and five being the most, of information returned with the response.
 
 ```
 var list = dcApi.FindAll(depth: 5);
@@ -175,49 +180,30 @@ The following table describes the request arguments:
 | DatacenterId | **yes** | string | The ID of the VDC. |
 | depth | no | int | The level of details returned. |
 
-```
-var dc = dcApi.FindById(DatacenterId, depth: 5);
-```
+    var dc = dcApi.FindById(DatacenterId, depth: 5);
 
 ---
 
 #### Create a Data Center
 
-Use this operation to create a new VDC. You can create a "simple" VDC by supplying just the required *name* and *location* parameters. This operation also has the capability of provisioning a "complex" VDC by supplying additional parameters for servers, volumes, LANs, and/or load balancers.
+Use this operation to create a new VDC. You can create a "simple" VDC by supplying just the required *name* and *location* arguments. This operation also has the capability of provisioning a "complex" VDC by supplying additional arguments for servers, volumes, LANs, and/or load balancers.
 
 The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| Name | **yes** | string | The name of the data center. |
-| Location | **yes** | string | The physical ProfitBricks location where the VDC will be created. |
-| Description | no | string | A description for the data center, e.g. staging, production. |
-| Servers | no | collection | Details about creating one or more servers. See [create a server](#create-a-server). |
-| Volumes | no | collection | Details about creating one or more volumes. See [create a volume](#create-a-volume). |
-| Lans | no | collection | Details about creating one or more LANs. See [create a lan](#create-a-lan). |
-| Loadbalancers | no | collection | Details about creating one or more load balancers. See [create a load balancer](#create-a-load- balancer). |
+| datacenter | **yes** | object | An object containing the properties of the VDC you want to create. |
 
-The following table outlines the locations currently supported:
+Declare a `Datacenter` object and assign the relevant properties:
 
-| Value| Country | City |
-|---|---|---|
-| us/las | United States | Las Vegas |
-| de/fra | Germany | Frankfurt |
-| de/fkb | Germany | Karlsruhe |
-
-**NOTES**:
-- The value for `Name` cannot contain the following characters: (@, /, , |, ‘’, ‘).
-- You cannot change the virtual data center `Location` once it has been provisioned.
-
-```
-var datacenter = new Datacenter
-            {
-                Properties = new DatacenterProperties
-                {
-                    Name = ".Net V2 - DC Test " + DateTime.Now.ToShortTimeString(),
-                    Description = "Unit test for .Net SDK PB REST V2",
-                    Location = "us/las"
-                },
+    var datacenter = new Datacenter
+    {
+        Properties = new DatacenterProperties
+        {
+            Name = ".Net V2 - DC Test " + DateTime.Now.ToShortTimeString(),
+            Description = "Unit test for .Net SDK PB REST V2",
+            Location = "us/las"
+            },
                 Entities = new DatacenterEntities
                 {
                     Servers = new Servers
@@ -236,17 +222,49 @@ var datacenter = new Datacenter
                         }
                     }
                 }
-            };
+    };
 
-datacenter = dcApi.Create(datacenter);
+Call the `Create` method and pass in the `datacenter` object:
 
-```
+    datacenter = dcApi.Create(datacenter);
+
+##### Data Center Object Reference
+
+This table shows the properties of a `Datacenter` object:
+
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| Name | **yes** | string | A name for the VDC. |
+| Location | **yes** | string | The ProfitBricks regional location where the VDC will be created. |
+| Description | no | string | A description for the VDC, e.g. staging, production. |
+
+**NOTES**:
+- The value for `Name` cannot contain the following characters: (@, /, , |, ‘’, ‘).
+- You cannot change the VDC `Location` once it has been provisioned.
+
+The following table outlines the locations currently supported:
+
+| Value| Country | City |
+|---|---|---|
+| us/las | United States | Las Vegas |
+| us/ewr | United States | Newark |
+| de/fra | Germany | Frankfurt |
+| de/fkb | Germany | Karlsruhe |
+
+These `DatacenterEntities` may also be supplied:
+
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| Servers | no | Servers | An array containing one or more Server ojbects. See [create a server](#create-a-server). |
+| Volumes | no | Volumes | An array containing one or more Volume objects. See [create a volume](#create-a-volume). |
+| Lans | no | Lans | An array containing one or more Lan objects. See [create a lan](#create-a-lan). |
+| Loadbalancers | no | Loadbalancers | An array containing one or more Loadbalancer objects. See [create a load balancer](#create-a-load- balancer). |
 
 ---
 
 #### Update a Data Center
 
-After retrieving a data center, either by getting it by id, or as a create response object, you can change its properties by calling the `PartialUpdate` or the `Update` method. Some parameters may not be changed using either of the update methods.
+After retrieving a VDC, either by getting it by id, or as a create response object, you can change its properties by calling the `PartialUpdate` or the `Update` method. Some values may not be changed using either of the update methods as they are read-only after the VDC is created.
 
 The following table describes the available request arguments:
 
@@ -256,9 +274,7 @@ The following table describes the available request arguments:
 | Name | no | string | The new name of the VDC. |
 | Description | no | string | The new description of the VDC. |
 
-```
-var resp = dcApi.PartialUpdate(DatacenterId, new DatacenterProperties { Name ="tes update"});
-```
+    var resp = dcApi.PartialUpdate(DatacenterId, new DatacenterProperties { Name ="Test Update"});
 
 **NOTE**: You may also use `Update()` instead of `PartialUpdate()`. For an `Update()` operation you will need to supply values for **all** the parameters.
 
@@ -266,7 +282,7 @@ var resp = dcApi.PartialUpdate(DatacenterId, new DatacenterProperties { Name ="t
 
 #### Delete a Data Center
 
-This will remove all objects within the virtual data center AND remove the virtual data center object itself.
+This will remove all objects within the VDC **AND** remove the VDC itself.
 
 **NOTE**: This is a highly destructive operation which should be used with extreme caution!
 
@@ -276,29 +292,25 @@ The following table describes the available request arguments:
 |---|:-:|---|---|
 | DatacenterId | **yes** | string | The ID of the VDC that you want to delete. |
 
-```
-var resp = dcApi.Delete(DatacenterId);
-```
+    var resp = dcApi.Delete(DatacenterId);
 
 ---
 
 ### Locations
 
-Locations are the physical ProfitBricks data centers where you can provision your VDCs.
+Locations are the physical ProfitBricks regional data centers where you can provision your VDCs.
 
-Create an instace of the api class:
+Create an instance of the API class:
 
-        LocationApi locApi = new LocationApi(Configuration);
+    LocationApi locApi = new LocationApi(Configuration);
 
 #### List Locations
 
 This operation will return the list of currently available locations.
 
-The optional `depth` parameter defines the level, one being the least and five being the most, of information returned with the response.
+The optional `depth` argument defines the level, one being the least and five being the most, of information returned with the response.
 
-```
-var locations = locApi.FindAll();
-```
+    var locations = locApi.FindAll();
 
 ---
 
@@ -312,27 +324,21 @@ The following table describes the request arguments:
 |---|:-:|---|---|
 | LocationId | **yes** | string | The ID consisting of country/city. |
 
-```
-Location loc = locApi.FindById(locationId);
-```
+    Location loc = locApi.FindById(locationId);
 
 ---
 
 ### Servers
 
-Create an instace of these api classes:
+Create an instance of these API classes:
 
-```
-ServerApi serverApi = new ServerApi(Configuration);
-AttachedCDROMsApi attachCDROMApi = new AttachedCDROMsApi(Configuration);
-AttachedVolumesApi attachedVolumesApi = new AttachedVolumesApi(Configuration);
-
-```
+    ServerApi serverApi = new ServerApi(Configuration);
+    AttachedCDROMsApi attachCDROMApi = new AttachedCDROMsApi(Configuration);
+    AttachedVolumesApi attachedVolumesApi = new AttachedVolumesApi(Configuration);
 
 #### List Servers
 
 You can retrieve a list of all the servers provisioned inside a specific VDC.
-
 
 The following table describes the request arguments:
 
@@ -341,9 +347,7 @@ The following table describes the request arguments:
 | DatacenterId | **yes** | string | The ID of the VDC. |
 | depth | no | int | The level of details returned. |
 
-```
-var list = serverApi.FindAll(DatacenterId);
-```
+    var list = serverApi.FindAll(DatacenterId);
 
 ---
 
@@ -359,9 +363,7 @@ The following table describes the request arguments:
 | ServerId | **yes** | string | The ID of the server. |
 | depth | no | int | The level of details returned. |
 
-```
-var server = serverApi.FindById(DatacenterId, ServerId);
-```
+    var server = serverApi.FindById(DatacenterId, ServerId);
 
 ---
 
@@ -374,6 +376,30 @@ The following table describes the request arguments:
 | Name| Required | Type | Description |
 |---|:-:|---|---|
 | DatacenterId | **yes** | string | The ID of the VDC. |
+| server | **yes** | Server | An object describing the server to be created. |
+
+Declare a `Server` object and assign the relevant properties:
+
+    var server = new Server
+    {
+        Properties = new ServerProperties
+        {
+            Name = "Test Server",
+            Cores = 1,
+            Ram = 1024,
+        }
+     };
+
+Call the `Create` method and pass in the arguments including the `server` object:
+
+    serverApi.Create(DatacenterId, server);
+
+##### Server Object Reference
+
+This table shows the properties of a `Server` object:
+
+| Name| Required | Type | Description |
+|---|:-:|---|---|
 | Name | **yes** | string | The name of the server. |
 | Cores | **yes** | int | The total number of cores for the server. |
 | Ram | **yes** | int | The amount of memory for the server in MB, e.g. 2048. Size must be specified in multiples of 256 MB with a minimum of 256 MB; however, if you set `ram_hot_plug` to *True* then you must use a minimum of 1024 MB. |
@@ -384,26 +410,13 @@ The following table describes the request arguments:
 | Volumes | no | object | A collection of volume objects that you want to create and attach to the server.|
 | Nics | no | object | A collection of NICs you wish to create at the time the server is provisioned. |
 
-The following table outlines the server availability zones currently supported:
+The following table outlines the server (compute) availability zones currently supported:
 
 | Availability Zone | Comment |
 |---|---|
 | AUTO | Automatically Selected Zone |
 | ZONE_1 | Fire Zone 1 |
 | ZONE_2 | Fire Zone 2 |
-
-```
-var server = new Server
-            {
-                Properties = new ServerProperties
-                {
-                    Name = "Test Server",
-                    Cores = 1,
-                    Ram = 1024,
-                }
-            };
-serverApi.Create(DatacenterId, server);
-```
 
 ---
 
@@ -427,9 +440,7 @@ The following table describes the request arguments:
 
 After retrieving a server, either by getting it by id, or as a create response object, you can change its properties and call the `PartialUpdate` method:
 
-```
-var updated = serverApi.PartialUpdate(DatacenterId, ServerId, new ServerProperties { Name ="Updated" });
-```
+    var updated = serverApi.PartialUpdate(DatacenterId, ServerId, new ServerProperties { Name ="Updated" });
 
 **NOTE**: You can also use `Update()`, for that operation you will update all the properties.
 
@@ -437,7 +448,9 @@ var updated = serverApi.PartialUpdate(DatacenterId, ServerId, new ServerProperti
 
 #### Delete a Server
 
-This will remove a server from a data center. **NOTE**: This will not automatically remove the storage volume(s) attached to a server. A separate operation is required to delete a storage volume.
+This will remove a server from a VDC.
+
+**Please Note**: This will not automatically remove the storage volume(s) attached to a server. A separate operation is required to delete a storage volume.
 
 The following table describes the request arguments:
 
@@ -448,9 +461,7 @@ The following table describes the request arguments:
 
 After retrieving a server, either by getting it by id, or as a create response object, you can call the `Delete` method directly:
 
-```
-var response = serverApi.Delete(DatacenterId, ServerId);
-```
+    var response = serverApi.Delete(DatacenterId, ServerId);
 
 ---
 
@@ -468,9 +479,7 @@ The following table describes the request arguments:
 
 After retrieving a server, either by getting it by id, or as a create response object, you can call the `FindAll` method directly:
 
-```
-var all = attachedVolumesApi.FindAll(DatacenterId, ServerId);
-```
+    var all = attachedVolumesApi.FindAll(DatacenterId, ServerId);
 
 ---
 
@@ -488,9 +497,7 @@ The following table describes the request arguments:
 
 After retrieving a server, either by getting it by id, or as a create response object, you can call the `AttachVolume` method directly.
 
-```
-var resp = attachedVolumesApi.AttachVolume(DatacenterId, ServerId, new Volume { Id = VolumeId });
-```
+    var resp = attachedVolumesApi.AttachVolume(DatacenterId, ServerId, new Volume { Id = VolumeId });
 
 ---
 
@@ -509,9 +516,7 @@ The following table describes the request arguments:
 
 After retrieving a server, either by getting it by id, or as a create response object, you can call the `FindById` method directly.
 
-```
-var attachedVol = attachedVolumesApi.FindById(DatacenterId, ServerId, VolumeId);
-```
+    var attachedVol = attachedVolumesApi.FindById(DatacenterId, ServerId, VolumeId);
 
 ---
 
@@ -531,9 +536,7 @@ The following table describes the request arguments:
 
 After retrieving a server, either by getting it by id, or as a create response object, you can call the `DetachVolume` method directly.
 
-```
-var resp = attachedVolumesApi.DetachVolume(DatacenterId,ServerId, VolumeId);
-```
+    var resp = attachedVolumesApi.DetachVolume(DatacenterId,ServerId, VolumeId);
 
 ---
 
@@ -551,9 +554,7 @@ The following table describes the request arguments:
 
 After retrieving a server, either by getting it by id, or as a create response object, you can call the `FindAll` method directly.
 
-```
- var listAttached = attachCDROMApi.FindAll(DatacenterId, ServerId);
-```
+    var listAttached = attachCDROMApi.FindAll(DatacenterId, ServerId);
 
 ---
 
@@ -571,9 +572,7 @@ The following table describes the request arguments:
 
 After retrieving a server, either by getting it by id, or as a create response object, you can call the `Attach` method directly.
 
-```
-var attached = attachCDROMApi.Attach(DatacenterId, ServerId, new Image { Id=CdRomImageId});
-```
+    var attached = attachCDROMApi.Attach(DatacenterId, ServerId, new Image { Id=CdRomImageId});
 
 ---
 
@@ -592,9 +591,7 @@ The following table describes the request arguments:
 
 After retrieving a server, either by getting it by id, or as a create response object, you can call the `FindById` method directly.
 
-```
-var getAttached = attachCDROMApi.FindById(DatacenterId, ServerId, CdRomImageId);
-```
+    var getAttached = attachCDROMApi.FindById(DatacenterId, ServerId, CdRomImageId);
 
 ---
 
@@ -612,9 +609,7 @@ The following table describes the request arguments:
 
 After retrieving a server, either by getting it by id, or as a create response object, you can call the `Detach` method directly.
 
-```
-var removed = attachCDROMApi.Detach(DatacenterId, ServerId, CdRomImageId);
-```
+    var removed = attachCDROMApi.Detach(DatacenterId, ServerId, CdRomImageId);
 
 ---
 
@@ -631,9 +626,7 @@ The following table describes the request arguments:
 
 After retrieving a server, either by getting it by id, or as a create response object, you can call the `Reboot` method directly.
 
-```
-var resp = serverApi.Reboot(DatacenterId, ServerId);
-```
+    var resp = serverApi.Reboot(DatacenterId, ServerId);
 
 ---
 
@@ -650,9 +643,7 @@ The following table describes the request arguments:
 
 After retrieving a server, either by getting it by id, or as a create response object, you can call the `Start` method directly.
 
-```
-var start = serverApi.Start(DatacenterId, ServerId);
-```
+    var start = serverApi.Start(DatacenterId, ServerId);
 
 ---
 
@@ -669,27 +660,23 @@ The following table describes the request arguments:
 
 After retrieving a server, either by getting it by id, or as a create response object, you can call the `Stop` method directly.
 
-```
-var error = serverApi.Stop(DatacenterId, ServerId);
-```
+    var error = serverApi.Stop(DatacenterId, ServerId);
 
 ---
 
 ### Images
 
-Create an instace of the api class:
+Create an instance of the API class:
 
-         ImageApi imageApi = new ImageApi(Configuration);
+    ImageApi imageApi = new ImageApi(Configuration);
 
 #### List Images
 
 Retrieve a list of images.
 
-The optional `depth` parameter defines the level, one being the least and five being the most, of information returned with the response.
+The optional `depth` argument defines the level, one being the least and five being the most, of information returned with the response.
 
-```
-var list = imageApi.FindAll();
-```
+    var list = imageApi.FindAll();
 
 ---
 
@@ -704,17 +691,15 @@ The following table describes the request arguments:
 | ImageId | **yes** | string | The ID of the image. |
 | depth | no | int | The level of details returned. |
 
-```
-var img = imageApi.FindById(ImageId);
-```
+    var img = imageApi.FindById(ImageId);
 
 ---
 
 ### Volumes
 
-Create an instace of the api class:
+Create an instance of the API class:
 
-         AttachedVolumesApi attachedVolumesApi = new AttachedVolumesApi(Configuration);
+    AttachedVolumesApi attachedVolumesApi = new AttachedVolumesApi(Configuration);
 
 #### List Volumes
 
@@ -727,9 +712,7 @@ The following table describes the request arguments:
 | DatacenterId | **yes** | string | The ID of the VDC. |
 | depth | no | int | The level of details returned. |
 
-```
-var list = volumeApi.FindAll(DatacenterId);
-```
+    var list = volumeApi.FindAll(DatacenterId);
 
 ---
 
@@ -745,21 +728,45 @@ The following table describes the request arguments:
 | VolumeId | **yes** | string | The ID of the volume. |
 | depth | no | int | The level of details returned. |
 
-```
-var volume = volumeApi.FindById(DatacenterId, VolumeId);
-```
+    var volume = volumeApi.FindById(DatacenterId, VolumeId);
 
 ---
 
 #### Create a Volume
 
-Creates a volume within the virtual data center. This will NOT attach the volume to a server. Please see the [Attach a Volume](#attach-a-volume) entry in the Server section for details on how to attach storage volumes.
+Creates a volume within the VDC. This will NOT attach the volume to a server. Please see the [Attach a Volume](#attach-a-volume) entry in the Server section for details on how to attach storage volumes.
 
 The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
 | DatacenterId | **yes** | string | The ID of the VDC. |
+| volume | **yes** | Volume | A Volume object. See [Volume Object Resource](#volume-object-resource). |
+
+Declare a `Volume` object and assign the relevant properties:
+
+    var volume = new Volume
+    {
+        Properties = new VolumeProperties
+        {
+            Size = 40,
+            LicenceType = "OTHER",
+            Type = "HDD",
+            Name = ".Net V2 - Test " + DateTime.Now.ToShortTimeString(),
+            AvailabilityZone = "ZONE_3"
+        }
+    };
+
+Call the `Create` method and pass in the arguments including the `volume` object:
+
+    volume = volumeApi.Create(DatacenterId, volume);
+
+##### Volume Object Reference
+
+This table shows the properties of a `Volume` object:
+
+| Name| Required | Type | Description |
+|---|:-:|---|---|
 | Name | no | string | The name of the volume. |
 | Size | **yes** | int | The size of the volume in GB. |
 | Bus | no | string | The bus type of the volume (VIRTIO or IDE). Default: VIRTIO. |
@@ -780,7 +787,7 @@ The following table outlines the various licence types you can define:
 | OTHER | Use this for any volumes that do not match one of the other licence types. |
 | UNKNOWN | This value may be inherited when you've uploaded an image and haven't set the license type. Use one of the options above instead. |
 
-The following table outlines the storage availability zones currently supported:
+The following table outlines the volume (storage) availability zones currently supported:
 
 | Availability Zone | Comment |
 |---|---|
@@ -789,22 +796,7 @@ The following table outlines the storage availability zones currently supported:
 | ZONE_2 | Fire Zone 2 |
 | ZONE_3 | Fire Zone 3 |
 
-* You will need to provide either the `Image` or the `LicenceType` parameters. `LicenceType` is required, but if `Image` is supplied, it is already set and cannot be changed. Similarly either the `ImagePassword` or `SshKeys` parameters need to be supplied when creating a volume. We recommend setting a valid value for `image_password` even when using `SshKeys` so that it is possible to authenticate using the remote console feature of the DCD.
-
-```
-var volume = new Volume
-            {
-                Properties = new VolumeProperties
-                {
-                    Size = 4,
-                    LicenceType = "UNKNOWN",
-                    Type = "HDD",
-                    Name = ".Net V2 - Test " + DateTime.Now.ToShortTimeString(),
-                    AvailabilityZone = "ZONE_3"
-                }
-            };
-            volume = volumeApi.Create(DatacenterId, volume, depth: 5);
-```
+**Please Note:** You will need to provide either the `Image` or the `LicenceType` parameters. `LicenceType` is required, but if `Image` is supplied, it is already set and cannot be changed. Similarly either the `ImagePassword` or `SshKeys` parameters need to be supplied when creating a volume.
 
 ---
 
@@ -814,7 +806,7 @@ You can update -- in full or partially -- various attributes on the volume; howe
 
 You can increase the size of an existing storage volume. You cannot reduce the size of an existing storage volume. The volume size will be increased without requiring a reboot if the relevant hot plug settings have been set to *true*. The additional capacity is not added automatically added to any partition, therefore you will need to handle that inside the OS afterwards. Once you have increased the volume size you cannot decrease the volume size.
 
-Since an existing volume is being modified, none of the request parameters are specifically required as long as the changes being made satisfy the requirements for creating a volume.
+Since an existing volume is being modified, none of the request arguments are specifically required as long as the changes being made satisfy the requirements for creating a volume.
 
 The following table describes the request arguments:
 
@@ -832,9 +824,7 @@ The following table describes the request arguments:
 
 After retrieving a volume, either by getting it by id, or as a create response object, you can change its properties and call the `PartialUpdate` method:
 
-```
-var newVolume = volumeApi.PartialUpdate(DatacenterId, VolumeId, new VolumeProperties { Size = volume.Properties.Size + 1 });
-```
+    var newVolume = volumeApi.PartialUpdate(DatacenterId, VolumeId, new VolumeProperties { Size = volume.Properties.Size + 1 });
 
 **NOTE**: You can also use `Update()`, for that operation you will update all the properties.
 
@@ -842,7 +832,7 @@ var newVolume = volumeApi.PartialUpdate(DatacenterId, VolumeId, new VolumeProper
 
 #### Delete a Volume
 
-Deletes the specified volume. This will result in the volume being removed from your data center. Use this with caution.
+Deletes the specified volume. This will result in the volume being removed from your VDC. Use this with caution.
 
 The following table describes the request arguments:
 
@@ -853,9 +843,7 @@ The following table describes the request arguments:
 
 After retrieving a volume, either by getting it by id, or as a create response object, you can call the `Delete` method directly.
 
-```
- var response = volumeApi.Delete(DatacenterId, VolumeId);
-```
+    var response = volumeApi.Delete(DatacenterId, VolumeId);
 
 ---
 
@@ -874,9 +862,7 @@ The following table describes the request arguments:
 
 After retrieving a volume, either by getting it by id, or as a create response object, you can call the `CreateSnapshot` method directly.
 
-```
-var resp = volumeApi.CreateSnapshot(DatacenterId, VolumeId, Name, Description);
-```
+    var resp = volumeApi.CreateSnapshot(DatacenterId, VolumeId, Name, Description);
 
 ---
 
@@ -893,27 +879,23 @@ The following table describes the request arguments:
 
 After retrieving a volume, either by getting it by id, or as a create response object, you can call the `RestoreSnapshot` method directly.
 
-```
-var resp = volumeApi.RestoreSnapshot(DatacenterId, SnapshotId);
-```
+    var resp = volumeApi.RestoreSnapshot(DatacenterId, SnapshotId);
 
 ---
 
 ### Snapshots
 
-Create an instace of the api class:
+Create an instance of the API class:
 
-         SnapshotApi snapshotApi = new SnapshotApi(Configuration);
+    SnapshotApi snapshotApi = new SnapshotApi(Configuration);
 
 #### List Snapshots
 
 You can retrieve a list of all available snapshots.
 
-The optional `depth` parameter defines the level, one being the least and five being the most, of information returned with the response.
+The optional `depth` argument defines the level, one being the least and five being the most, of information returned with the response.
 
-```
-var list = snapshotApi.FindAll(depth: 5);
-```
+    var list = snapshotApi.FindAll(depth: 5);
 
 ---
 
@@ -928,9 +910,7 @@ The following table describes the request arguments:
 | SnapshotId | **yes** | string | The ID of the snapshot. |
 | depth | no | int | The level of details returned. |
 
-```
-var snapshot = snapshotApi.FindById(SnapshotId);
-```
+    var snapshot = snapshotApi.FindById(SnapshotId);
 
 ---
 
@@ -959,9 +939,7 @@ The following table describes the request arguments:
 
 After retrieving a snapshot, either by getting it by id, or as a create response object, you can change its properties and call the `PartialUpdate` method:
 
-```
-var updated = snapshotApi.PartialUpdate(SnapshotId, new SnapshotProperties { Name ="Updated" });
-```
+    var updated = snapshotApi.PartialUpdate(SnapshotId, new SnapshotProperties { Name ="Updated" });
 
 **NOTE**: You can also use `Update()`, for that operation you will update all the properties.
 
@@ -979,9 +957,7 @@ The following table describes the request arguments:
 
 After retrieving a snapshot, either by getting it by id, or as a create response object, you can call the `Delete` method directly.
 
-```
-var resp = snapshotApi.Delete(SnapshotId);
-```
+    var resp = snapshotApi.Delete(SnapshotId);
 
 ---
 
@@ -989,20 +965,17 @@ var resp = snapshotApi.Delete(SnapshotId);
 
 The IP block operations assist with managing reserved /static public IP addresses.
 
-Create an instace of the api class:
+Create an instance of the API class:
 
-         IPBlocksApi ipApi = new IPBlocksApi(Configuration);
+    IPBlocksApi ipApi = new IPBlocksApi(Configuration);
 
 #### List IP Blocks
 
 Retrieve a list of available IP blocks.
 
-The optional `depth` parameter defines the level, one being the least and five being the most, of information returned with the response.
+The optional `depth` argument defines the level, one being the least and five being the most, of information returned with the response.
 
-
-```
-var list = ipApi.FindAll();
-```
+    var list = ipApi.FindAll();
 
 #### Get an IP Block
 
@@ -1015,21 +988,40 @@ The following table describes the request arguments:
 | IpBlockId | **yes** | string | The ID of the IP block. |
 | depth | no | int | The level of details returned. |
 
-```
-var ip = ipApi.FindById(IpBlockId);
-```
+    var ip = ipApi.FindById(IpBlockId);
 
 ---
 
 #### Create an IP Block
 
-Creates an IP block. IP blocks are attached to a location, so you must specify a valid `location` along with a `size` parameter indicating the number of IP addresses you want to reserve in the IP block. Servers or other resources using an IP address from an IP block must be in the same `location`.
+Creates an IP block. IP blocks are attached to a location, so you must specify a valid `location` along with a `size` argument indicating the number of IP addresses you want to reserve in the IP block. Servers or other resources using an IP address from an IP block must be in the same `location`.
 
 The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| Location | **yes** | string | This must be one of the locations: us/las, de/fra, de/fkb. |
+| ipBlock | **yes** | IpBlock | [IpBlock object](#ipblock-object-resource). |
+
+Declare an `IpBlock` object and assign the relevant properties:
+
+    var ipBlock = new IpBlock
+    {
+        Properties = new IpBlockProperties
+        {
+            Location = "us/las",
+            Size = 1
+        }
+    };
+
+Call the `Create` method and pass in the `ipBlock` object:
+
+    ipBlock = ipApi.Create(ipBlock);
+
+##### IpBlock Object Reference
+
+| Name| Required | Type | Description |
+|---|:-:|---|---|
+| Location | **yes** | string | This must be one of the locations: us/las, us/ewr, de/fra, de/fkb. |
 | Size | **yes** | int | The size of the IP block you want. |
 | Name | no | string | A descriptive name for the IP block |
 
@@ -1038,15 +1030,9 @@ The following table outlines the locations currently supported:
 | Value| Country | City |
 |---|---|---|
 | us/las | United States | Las Vegas |
+| us/ewr | United States | Newark |
 | de/fra | Germany | Frankfurt |
 | de/fkb | Germany | Karlsruhe |
-
-To create an IP block, establish the parameters and then call `reserve_ipblock`.
-
-```
-var ipBlock = new IpBlock { Properties = new IpBlockProperties { Location = "us/las", Size = 1 } };
-ipBlock = ipApi.Create(ipBlock);
-```
 
 ---
 
@@ -1062,9 +1048,7 @@ The following table describes the request arguments:
 
 After retrieving an IP block, either by getting it by id, or as a create response object, you can call the `Delete` method directly.
 
-```
-var resp = ipApi.Delete(IpBlockId);
-```
+    var resp = ipApi.Delete(IpBlockId);
 
 ---
 
@@ -1072,7 +1056,7 @@ var resp = ipApi.Delete(IpBlockId);
 
 #### List LANs
 
-Retrieve a list of LANs within the virtual data center.
+Retrieve a list of LANs within the VDC.
 
 The following table describes the request arguments:
 
@@ -1081,49 +1065,54 @@ The following table describes the request arguments:
 | DatacenterId | **yes** | string | The ID of the VDC. |
 | depth | no | int | The level of details returned. |
 
-```
-var list = lanApi.FindAll(DatacenterId);
-```
+    var list = lanApi.FindAll(DatacenterId);
 
 ---
 
 #### Create a LAN
 
-Creates a LAN within a virtual data center.
+Creates a LAN within a VDC.
 
 The following table describes the request arguments:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
 | DatacenterId | **yes** | string | The ID of the VDC. |
+| lan | **yes** | Lan | Lan object. |
+
+Declare a `Lan` object and assign the relevant properties:
+
+    var lan = lanApi.Create(DatacenterId, new Lan
+    {
+        Properties = new LanProperties
+        {
+            Public = true,
+            Name = ".Net V2 - Test " + DateTime.Now.ToShortTimeString()
+        },
+        Entities=new LanEntities
+        {
+            Nics= new LanNics
+            {
+                Items= new List<Nic>()
+                {
+                    new Nic
+                    {
+                        Id=nic.Id
+                    }
+                }
+            }
+        }
+    };
+
+Call the `Create` method and pass in the arguments including the `lan` object:
+
+##### Lan Object Reference
+
+| Name| Required | Type | Description |
+|---|:-:|---|---|
 | Name | no | string | The name of your LAN. |
 | Public | **Yes** | bool | Boolean indicating if the LAN faces the public Internet or not. |
 | Nics | no | object | A collection of NICs associated with the LAN. |
-
-```
-var lan = lanApi.Create(DatacenterId, new Lan
-            {
-                Properties = new LanProperties
-                {
-                    Public = true,
-                    Name = ".Net V2 - Test " + DateTime.Now.ToShortTimeString()
-                },
-                Entities=new LanEntities{
-                    Nics= new LanNics
-                    {
-                        Items= new List<Nic>()
-                        {
-                            new Nic
-                            {
-                                Id=nic.Id
-                            }
-                        }
-
-                    }
-
-                }
-            });
-```
 
 ---
 
@@ -1139,9 +1128,7 @@ The following table describes the request arguments:
 | LanId | **yes** | int | The ID of the LAN. |
 | depth | no | int | The level of details returned. |
 
-```
-var lan = lanApi.FindById(DatacenterId, LanId);
-```
+    var lan = lanApi.FindById(DatacenterId, LanId);
 
 ---
 
@@ -1160,9 +1147,7 @@ The following table describes the request arguments:
 
 After retrieving a LAN, either by getting it by id, or as a create response object, you can change its properties and call the `PartialUpdate` method:
 
-```
-var updated = lanApi.PartialUpdate(DatacenterId, LanId, new LanProperties { Public = True });
-```
+    var updated = lanApi.PartialUpdate(DatacenterId, LanId, new LanProperties { Public = True });
 
 **NOTE**: You can also use `Update()`, for that operation you will update all the properties.
 
@@ -1181,17 +1166,15 @@ The following table describes the request arguments:
 
 After retrieving a LAN, either by getting it by id, or as a create response object, you can call the `Delete` method directly.
 
-```
-lanApi.Delete(DatacenterId,LanId);
-```
+    lanApi.Delete(DatacenterId,LanId);
 
 ---
 
 ### Network Interfaces
 
-Create an instance of the api class:
+Create an instance of the API class:
 
-         NetworkInterfacesApi nicApi = new NetworkInterfacesApi(Configuration);
+    NetworkInterfacesApi nicApi = new NetworkInterfacesApi(Configuration);
 
 #### List NICs
 
@@ -1205,9 +1188,7 @@ The following table describes the request arguments:
 | ServerId | **yes** | string | The ID of the server. |
 | depth | no | int | The level of details returned. |
 
-```
- var list = nicApi.FindAll(DatacenterId, ServerId);
-```
+    var list = nicApi.FindAll(DatacenterId, ServerId);
 
 ---
 
@@ -1224,9 +1205,7 @@ The following table describes the request arguments:
 | NicId | **yes** | string | The ID of the NIC. |
 | depth | no | int | The level of details returned. |
 
-```
-var nic = nicApi.FindById(DatacenterId, ServerId, NicId);
-```
+    var nic = nicApi.FindById(DatacenterId, ServerId, NicId);
 
 ---
 
@@ -1240,6 +1219,27 @@ The following table describes the request arguments:
 |---|:-:|---|---|
 | DatacenterId | **yes** | string | The ID of the VDC. |
 | ServerId | **yes** | string| The ID of the server. |
+| nic | **yes** | Nic | Nic object. |
+
+Declare a `Nic` object and assign the relevant properties:
+
+    var nic = new Nic
+    {
+        Properties = new NicProperties
+        {
+            Lan = 1,
+            Nat = false
+        }
+    };
+
+Call the `Create` method and pass in the arguments including the `nic` object:
+
+    nic = nicApi.Create(DatacenterId, ServerId, nic);
+
+##### Nic Object Reference
+
+| Name| Required | Type | Description |
+|---|:-:|---|---|
 | Name | no | string | The name of the NIC. |
 | Ips | no | string collection | IPs assigned to the NIC. This can be a collection. |
 | Dhcp | no | bool | Set to FALSE if you wish to disable DHCP on the NIC. Default: TRUE. |
@@ -1247,12 +1247,6 @@ The following table describes the request arguments:
 | Nat | no | bool | Indicates the private IP address has outbound access to the public internet. |
 | FirewallActive | no | bool | Once you add a firewall rule this will reflect a true value. |
 | FirewallRules | no | object| A list of firewall rules associated to the NIC represented as a collection. |
-
-```
-var nic = new Nic { Properties = new NicProperties { Lan = 1, Nat = false } };
-
-nic = nicApi.Create(DatacenterId, ServerId, nic);
-```
 
 ---
 
@@ -1279,9 +1273,7 @@ The following table describes the request arguments:
 
 After retrieving a NIC, either by getting it by id, or as a create response object, you can call the `PartialUpdate` method directly.
 
-```
-var updated = nicApi.PartialUpdate(DatacenterId, ServerId, NicId, new NicProperties { Name ="Update", Ips = new System.Collections.Generic.List<string> { "10.8.52.225", "1.1.1.1" } });
-```
+    var updated = nicApi.PartialUpdate(DatacenterId, ServerId, NicId, new NicProperties { Name ="Update", Ips = new System.Collections.Generic.List<string> { "10.8.52.225", "1.1.1.1" } });
 
 **NOTE**: You can also use `Update()`, for that operation you will update all the properties.
 
@@ -1301,17 +1293,15 @@ The following table describes the request arguments:
 
 After retrieving a NIC, either by getting it by id, or as a create response object, you can call the `Delete` method directly.
 
-```
-var resp = nicApi.Delete(DatacenterId, ServerId, NicId);
-```
+    var resp = nicApi.Delete(DatacenterId, ServerId, NicId);
 
 ---
 
 ### Firewall Rules
 
-Create an instace of the api class:
+Create an instance of the API class:
 
-         FirewallRuleApi fwApi = new FirewallRuleApi(Configuration);
+    FirewallRuleApi fwApi = new FirewallRuleApi(Configuration);
 
 #### List Firewall Rules
 
@@ -1326,9 +1316,7 @@ The following table describes the request arguments:
 | NicId | **yes** | string | The ID of the NIC. |
 | depth | no | int | The level of details returned. |
 
-```
-var list = fwApi.FindAll(DatacenterId, ServerId, NicId);
-```
+    var list = fwApi.FindAll(DatacenterId, ServerId, NicId);
 
 ---
 
@@ -1346,9 +1334,7 @@ The following table describes the request arguments:
 | FirewallRuleId | **yes** | string | The ID of the firewall rule. |
 | depth | no | int | The level of details returned. |
 
-```
-var newFw = fwApi.FindById(DatacenterId, ServerId, NicId, FirewallRuleId);
-```
+    var newFw = fwApi.FindById(DatacenterId, ServerId, NicId, FirewallRuleId);
 
 ---
 
@@ -1363,6 +1349,20 @@ The following table describes the request arguments:
 | DatacenterId | **yes** | string | The ID of the VDC. |
 | ServerId | **yes** | string | The ID of the server. |
 | NicId | **yes** | string | The ID of the NIC. |
+| fw | **yes** | object | |
+
+Declare a `FirewallRule` object and assign the relevant properties:
+
+    var fw = new FirewallRule { Properties = new FirewallruleProperties { Protocol = "TCP", Name = ".Net" } };
+
+Call the `Create` method and pass in the arguments including the `fw` object:
+
+    fw = fwApi.Create(DatacenterId, ServerId, NicId, fw);
+
+##### Firewall Object Reference
+
+| Name| Required | Type | Description |
+|---|:-:|---|---|
 | Name | no | string | The name of the firewall rule. |
 | Protocol | **yes** | string | The protocol for the rule: TCP, UDP, ICMP, ANY. |
 | SourceMac | no | string | Only traffic originating from the respective MAC address is allowed. Valid format: aa:bb:cc:dd:ee:ff. A *null* value allows all source MAC address. |
@@ -1372,12 +1372,6 @@ The following table describes the request arguments:
 | PortRangeEnd | no | string | Defines the end range of the allowed port (from 1 to 65534) if the protocol TCP or UDP is chosen. Leave `PortRangeStart` and `PortRangeEnd` value as *null* to allow all ports. |
 | IcmpType | no | string | Defines the allowed type (from 0 to 254) if the protocol ICMP is chosen. A *null* value allows all types. |
 | IcmpCode | no | string | Defines the allowed code (from 0 to 254) if protocol ICMP is chosen. A *null* value allows all codes. |
-
-```
-var fw = new FirewallRule { Properties = new FirewallruleProperties { Protocol = "TCP", Name = ".Net" } };
-
-fw = fwApi.Create(DatacenterId, ServerId, NicId, fw);
-```
 
 ---
 
@@ -1404,9 +1398,7 @@ The following table describes the request arguments:
 
 After retrieving a firewall rule, either by getting it by id, or as a create response object, you can change its properties and call the `PartialUpdate` method:
 
-```
-var updated = fwApi.PartialUpdate(DatacenterId, ServerId, NicId, FirewallRuleId, new FirewallruleProperties {Name = "Updated" });
-```
+    var updated = fwApi.PartialUpdate(DatacenterId, ServerId, NicId, FirewallRuleId, new FirewallruleProperties {Name = "Updated" });
 
 **NOTE**: You can also use `Update()`, for that operation you will update all the properties.
 
@@ -1425,19 +1417,15 @@ Removes the specific firewall rule.
 
 After retrieving a firewall rule, either by getting it by id, or as a create response object, you can call the `Delete` method directly.
 
-```
-var resp = fwApi.Delete(DatacenterId, ServerId, NicId, FirewallRuleId);
-```
+    var resp = fwApi.Delete(DatacenterId, ServerId, NicId, FirewallRuleId);
 
 ---
 
-
-
 ### Load Balancers
 
-Create an instace of the api class:
+Create an instance of the API class:
 
-         LoadBalancerApi lbApi = new LoadBalancerApi(Configuration)
+    LoadBalancerApi lbApi = new LoadBalancerApi(Configuration)
 
 #### List Load Balancers
 
@@ -1450,9 +1438,7 @@ The following table describes the request arguments:
 | DatacenterId | **yes** | string | The ID of the VDC. |
 | depth | no | int | The level of details returned. |
 
-```
-var list = lbApi.FindAll(DatacenterId);
-```
+    var list = lbApi.FindAll(DatacenterId);
 
 ---
 
@@ -1468,9 +1454,7 @@ The following table describes the request arguments:
 | LoadBalancerId | **yes** | string | The ID of the load balancer. |
 | depth | no | int | The level of details returned. |
 
-```
-var lb = lbApi.FindById(DatacenterId, LoadBalancerId);
-```
+    var lb = lbApi.FindById(DatacenterId, LoadBalancerId);
 
 ---
 
@@ -1483,22 +1467,30 @@ The following table describes the request arguments:
 | Name| Required | Type | Description |
 |---|:-:|---|---|
 | DatacenterId | **yes** | string | The ID of the VDC. |
+| lb | **yes** | Loadbalancer | LoadBalancer object. |
+
+Declare a `Loadbalancer` object and assign the relevant properties:
+
+    var lb = new Loadbalancer
+    {
+        Properties = new LoadbalancerProperties
+        {
+            Name = ".Net V2 - Test " + DateTime.Now.ToShortTimeString()
+        }
+    };
+
+Call the `Create` method and pass in the arguments including the `lb` object:
+
+    lb = lbApi.Create(DatacenterId, lb);
+
+##### Loadbalancer Object Resource
+
+| Name| Required | Type | Description |
+|---|:-:|---|---|
 | Name | **yes** | string | The name of the load balancer. |
 | Ip | no | string | IPv4 address of the load balancer. All attached NICs will inherit this IP. |
 | Dhcp | no | bool | Indicates if the load balancer will reserve an IP using DHCP. |
 | BalancedNics | no | string collection | List of NICs taking part in load-balancing. All balanced NICs inherit the IP of the load balancer. |
-
-```
-var lb = new Loadbalancer
-                {
-                    Properties = new LoadbalancerProperties
-                    {
-                        Name = ".Net V2 - Test " + DateTime.Now.ToShortTimeString()
-                    }
-                };
-
-lb = lbApi.Create(DatacenterId, lb, depth: 5);
-```
 
 ---
 
@@ -1518,9 +1510,7 @@ The following table describes the request arguments:
 
 After retrieving a load balancer, either by getting it by id, or as a create response object, you can change it's properties and call the `PartialUpdate` method:
 
-```
-var newLb = lbApi.PartialUpdate(DatacenterId, LoadBalancerId, new LoadbalancerProperties { Name = "Updated" });
-```
+    var newLb = lbApi.PartialUpdate(DatacenterId, LoadBalancerId, new LoadbalancerProperties { Name = "Updated" });
 
 **NOTE**: You can also use `Update()`, for that operation you will update all the properties.
 
@@ -1539,9 +1529,7 @@ The following table describes the request arguments:
 
 After retrieving a load balancer, either by getting it by id, or as a create response object, you can call the `Delete` method directly.
 
-```
-var resp = lbApi.Delete(DatacenterId, LoadBalancerId);
-```
+    var resp = lbApi.Delete(DatacenterId, LoadBalancerId);
 
 ---
 
@@ -1600,10 +1588,8 @@ The following table describes the request arguments:
 
 After retrieving a load balancer, either by getting it by id, or as a create response object, you can call the `AttachNic` method directly.
 
-```
-NetworkInterfacesApi nicApi = new NetworkInterfacesApi(Configuration);
-var attachedNic = nicApi.AttachNic(DatacenterId, LoadBalancerId, new Nic { Id = NicId });
-```
+    NetworkInterfacesApi nicApi = new NetworkInterfacesApi(Configuration);
+    var attachedNic = nicApi.AttachNic(DatacenterId, LoadBalancerId, new Nic { Id = NicId });
 
 ---
 
@@ -1621,9 +1607,7 @@ The following table describes the request arguments:
 
 After retrieving a load balancer, either by getting it by id, or as a create response object, you can call the `DetachNic` method directly.
 
-```
-var resp = nicApi.DetachNic(DatacenterId, LoadBalancerId, NicId);
-```
+    var resp = nicApi.DetachNic(DatacenterId, LoadBalancerId, NicId);
 
 ---
 
@@ -1631,17 +1615,15 @@ var resp = nicApi.DetachNic(DatacenterId, LoadBalancerId, NicId);
 
 Each call to the ProfitBricks Cloud API is assigned a request ID. These operations can be used to get information about the requests that have been submitted and their current status.
 
-Create an instace of the api class:
+Create an instance of the API class:
 
-         RequestApi reqApi = new RequestApi(Configuration);
+    RequestApi reqApi = new RequestApi(Configuration);
 
 #### List Requests
 
 Retrieve a list of requests.
 
-```
-var requests = reqApi.List();
-```
+    var requests = reqApi.List();
 
 ---
 
@@ -1655,9 +1637,7 @@ The following table describes the request arguments:
 |---|:-:|---|---|
 | RequestId | **yes** | string | The ID of the request. |
 
-```
-var req = reqApi.Get(RequestId);
-```
+    var req = reqApi.Get(RequestId);
 
 ---
 
@@ -1671,9 +1651,7 @@ The following table describes the request arguments:
 |---|:-:|---|---|
 | RequestId | **yes** | string | The ID of the request. |
 
-```
-RequestStatus req = reqApi.GetStatus(RequestId);
-```
+    RequestStatus req = reqApi.GetStatus(RequestId);
 
 ---
 
@@ -1710,7 +1688,7 @@ The following code example shows you how to programmatically create a data cente
 
                 // CreateDataCenterRequest.
                 // The only required field is DataCenterName.
-                // If location parameter is left empty the virtual data center will be created in the user's default region
+                // If the location argument is left empty the virtual data center will be created in the user's default region
                 var datacenter = new Datacenter
                 {
                     Properties = new DatacenterProperties
@@ -1853,7 +1831,7 @@ The sample below shows you how to add a second NIC to an existing server:
 
                 // CreateDataCenterRequest.
                 // The only required field is DataCenterName.
-                // If location parameter is left empty data center will be created in the default region of the customer
+                // If location the argument is left empty data center will be created in the default region of the customer
                 var datacenter = new Datacenter
                 {
                     Properties = new DatacenterProperties
@@ -1953,7 +1931,7 @@ Please report any issues or bugs your encounter using the [GitHub Issue Tracker]
 
 ## Testing
 
-You can find a full list of tests inside the `ProfitbricksV2.Tests` project.You can run tests from the Visual Studio Test Explorer.
+You can find a full list of tests inside the `ProfitbricksV2.Tests` project. You can run tests from the Visual Studio Test Explorer.
 
 ## Contributing
 
