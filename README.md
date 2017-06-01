@@ -10,85 +10,17 @@ Version: profitbricks-sdk-net **3.0.4**
   * [Authenticating](#authenticating)
 * [Reference](#reference)
   * [Data Centers](#data-centers)
-    * [List Data Centers](#list-data-centers)
-    * [Retrieve a Data Center](#retrieve-a-data-center)
-    * [Create a Data Center](#create-a-data-center)
-    * [Update a Data Center](#update-a-data-center)
-    * [Delete a Data Center](#delete-a-data-center)
   * [Locations](#locations)
-    * [List Locations](#list-locations)
-    * [Get a Location](#get-a-location)
   * [Servers](#servers)
-    * [List Servers](#list-servers)
-    * [Retrieve a Server](#retrieve-a-server)
-    * [Create a Server](#create-a-server)
-    * [Update a Server](#update-a-server)
-    * [Delete a Server](#delete-a-server)
-    * [List Attached Volumes](#list-attached-volumes)
-    * [Attach a Volume](#attach-a-volume)
-    * [Retrieve an Attached Volume](#retrieve-an-attached-volume)
-    * [Detach a Volume](#detach-a-volume)
-    * [List Attached CD-ROMs](#list-attached-cd-roms)
-    * [Attach a CD-ROM](#attach-a-cd-rom)
-    * [Retrieve an Attached CD-ROM](#retrieve-an-attached-cd-rom)
-    * [Detach a CD-ROM](#detach-a-cd-rom)
-    * [Reboot a Server](#reboot-a-server)
-    * [Start a Server](#start-a-server)
-    * [Stop a Server](#stop-a-server)
   * [Images](#images)
-    * [List Images](#list-images)
-    * [Get an Image](#get-an-image)
-    * [Update an Image](#update-an-image)
-    * [Delete an Image](#delete-an-image)
   * [Volumes](#volumes)
-    * [List Volumes](#list-volumes)
-    * [Get a Volume](#get-a-volume)
-    * [Create a Volume](#create-a-volume)
-    * [Update a Volume](#update-a-volume)
-    * [Delete a Volume](#delete-a-volume)
-    * [Create a Volume Snapshot](#create-a-volume-snapshot)
-    * [Restore a Volume Snapshot](#restore-a-volume-snapshot)
   * [Snapshots](#snapshots)
-    * [List Snapshots](#list-snapshots)
-    * [Get a Snapshot](#get-a-snapshot)
-    * [Update a Snapshot](#update-a-snapshot)
-    * [Delete a Snapshot](#delete-a-snapshot)
   * [IP Blocks](#ip-blocks)
-    * [List IP Blocks](#list-ip-blocks)
-    * [Get an IP Block](#get-an-ip-block)
-    * [Create an IP Block](#create-an-ip-block)
-    * [Delete an IP Block](#delete-an-ip-block)
   * [LANs](#lans)
-    * [List LANs](#list-lans)
-    * [Create a LAN](#create-a-lan)
-    * [Get a LAN](#get-a-lan)
-    * [Update a LAN](#update-a-lan)
-    * [Delete a LAN](#delete-a-lan)
   * [Network Interfaces (NICs)](#network-interfaces)
-    * [List NICs](#list-nics)
-    * [Get a NIC](#get-a-nic)
-    * [Create a NIC](#create-a-nic)
-    * [Update a NIC](#update-a-nic)
-    * [Delete a NIC](#delete-a-nic)
   * [Firewall Rules](#firewall-rules)
-    * [List Firewall Rules](#list-firewall-rules)
-    * [Get a Firewall Rule](#get-a-firewall-rule)
-    * [Create a Firewall Rule](#create-a-firewall-rule)
-    * [Update a Firewall Rule](#update-a-firewall-rule)
-    * [Delete a Firewall Rule](#delete-a-firewall-rule)
   * [Load Balancers](#load-balancers)
-    * [List Load Balancers](#list-load-balancers)
-    * [Get a Load Balancer](#get-a-load-balancer)
-    * [Create a Load Balancer](#create-a-load-balancer)
-    * [Update a Load Balancer](#update-a-load-balancer)
-    * [List Load Balanced NICs](#list-load-balanced-nics)
-    * [Get a Load Balanced NIC](#get-a-load-balanced-nic)
-    * [Associate NIC to a Load Balancer](#associate-nic-to-a-load-balancer)
-    * [Remove a NIC Association](#remove-a-nic-association)
   * [Requests](#requests)
-    * [List Requests](#list-requests)
-    * [Get a Request](#get-a-request)
-    * [Get a Request Status](#get-a-request-status)
 * [Examples](#examples)
 * [Support](#support)
 * [Testing](#testing)
@@ -104,7 +36,7 @@ This guide will show you how to programmatically perform common management tasks
 
 ## Getting Started
 
-Before you begin you will need to have [signed-up](https://www.profitbricks.com/signup) for a ProfitBricks account. The credentials you setup during sign-up will be used to authenticate against the Cloud API.
+Before you begin you will need to have [signed up](https://www.profitbricks.com/signup) for a ProfitBricks account. The credentials you setup during sign-up will be used to authenticate against the Cloud API.
 
 ### Installation
 
@@ -133,7 +65,7 @@ To setup your credentials you will have to provide an instance of the Configurat
          }
     }
 
-You can choose to read them from the environment variables like in the example above, or just provide the string value for *Username* and *Password*.
+You can choose to read them from the environment variables as in the example above, or just provide the string value for `Username` and `Password`.
 
     var configuration = new Configuration
     {
@@ -141,7 +73,7 @@ You can choose to read them from the environment variables like in the example a
         Password = "strong_pwd"
     };
 
-You can now use create an instance of any API class and pass the Configuration property for any future request.
+You can now create an instance of any API class and pass the Configuration property for any future request.
 
 	 LocationApi locApi = new LocationApi(Configuration);
 
@@ -159,9 +91,9 @@ Create an instance of the API class:
 
 #### List Data Centers
 
-This operation will list all currently provisioned VDCs that your account credentials provide access to.
+Lists all currently provisioned VDCs that are accessible for your account credentials.
 
-The optional `depth` argument defines the level, one being the least and five being the most, of information returned with the response.
+The optional `depth` argument defines the level of information returned by the response. A depth of 1 returns the least amount of information; 5 returns the most.
 
 ```
 var list = dcApi.FindAll(depth: 5);
@@ -171,9 +103,9 @@ var list = dcApi.FindAll(depth: 5);
 
 #### Retrieve a Data Center
 
-Use this to retrieve details about a specific VDC.
+Retrieves details about a specific VDC.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -186,9 +118,9 @@ The following table describes the request arguments:
 
 #### Create a Data Center
 
-Use this operation to create a new VDC. You can create a "simple" VDC by supplying just the required *name* and *location* arguments. This operation also has the capability of provisioning a "complex" VDC by supplying additional arguments for servers, volumes, LANs, and/or load balancers.
+Creates a new VDC. You can create a "simple" VDC by supplying just the required `name` and `location` arguments. This operation also has the capability of provisioning a "complex" VDC by supplying additional arguments for servers, volumes, LANs, and/or load balancers.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -230,7 +162,7 @@ Call the `Create` method and pass in the `datacenter` object:
 
 ##### Data Center Object Reference
 
-This table shows the properties of a `Datacenter` object:
+**Datacenter Object Properties**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -239,10 +171,10 @@ This table shows the properties of a `Datacenter` object:
 | Description | no | string | A description for the VDC, e.g. staging, production. |
 
 **NOTES**:
-- The value for `Name` cannot contain the following characters: (@, /, , |, ‘’, ‘).
+- The value for `Name` cannot contain the characters: (@, /, , |, ‘’, ‘).
 - You cannot change the VDC `Location` once it has been provisioned.
 
-The following table outlines the locations currently supported:
+**Supported Locations**
 
 | Value| Country | City |
 |---|---|---|
@@ -264,9 +196,9 @@ These `DatacenterEntities` may also be supplied:
 
 #### Update a Data Center
 
-After retrieving a VDC, either by getting it by id, or as a create response object, you can change its properties by calling the `PartialUpdate` or the `Update` method. Some values may not be changed using either of the update methods as they are read-only after the VDC is created.
+After retrieving a VDC, either by getting it by ID, or as a create response object, you can change its properties by calling the `PartialUpdate` or the `Update` method. Some values may not be changed using either of the update methods as they are read-only after the VDC is created.
 
-The following table describes the available request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -284,9 +216,9 @@ The following table describes the available request arguments:
 
 This will remove all objects within the VDC **AND** remove the VDC itself.
 
-**NOTE**: This is a highly destructive operation which should be used with extreme caution!
+**NOTE**: This is a highly destructive operation which should be used with extreme caution.
 
-The following table describes the available request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -306,9 +238,9 @@ Create an instance of the API class:
 
 #### List Locations
 
-This operation will return the list of currently available locations.
+Returns the list of currently available locations.
 
-The optional `depth` argument defines the level, one being the least and five being the most, of information returned with the response.
+The optional `depth` argument defines the level of information returned by the response. A depth of 1 returns the least amount of information; 5 returns the most.
 
     var locations = locApi.FindAll();
 
@@ -318,7 +250,7 @@ The optional `depth` argument defines the level, one being the least and five be
 
 Retrieves the attributes of a specific location.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -330,7 +262,7 @@ The following table describes the request arguments:
 
 ### Servers
 
-Create an instance of these API classes:
+Creates an instance of these API classes:
 
     ServerApi serverApi = new ServerApi(Configuration);
     AttachedCDROMsApi attachCDROMApi = new AttachedCDROMsApi(Configuration);
@@ -338,9 +270,9 @@ Create an instance of these API classes:
 
 #### List Servers
 
-You can retrieve a list of all the servers provisioned inside a specific VDC.
+Retrieves a list of all the servers provisioned inside a specific VDC.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -355,7 +287,7 @@ The following table describes the request arguments:
 
 Returns information about a specific server such as its configuration, provisioning status, etc.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -371,7 +303,7 @@ The following table describes the request arguments:
 
 Creates a server within an existing VDC. You can configure additional properties such as specifying a boot volume and connecting the server to a LAN.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -396,7 +328,7 @@ Call the `Create` method and pass in the arguments including the `server` object
 
 ##### Server Object Reference
 
-This table shows the properties of a `Server` object:
+**Server Object Properties**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -410,7 +342,7 @@ This table shows the properties of a `Server` object:
 | Volumes | no | object | A collection of volume objects that you want to create and attach to the server.|
 | Nics | no | object | A collection of NICs you wish to create at the time the server is provisioned. |
 
-The following table outlines the server (compute) availability zones currently supported:
+**Supported Server (Compute) Availability Zones**
 
 | Availability Zone | Comment |
 |---|---|
@@ -422,9 +354,9 @@ The following table outlines the server (compute) availability zones currently s
 
 #### Update a Server
 
-Perform updates to the attributes of a server.
+Performs updates to the attributes of a server.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -438,7 +370,7 @@ The following table describes the request arguments:
 | BootVolume | no | object | Reference to a volume used for booting. If not *null* then `BootCdrom` has to be *null* |
 | BootCdrom | no | object | Reference to a CD-ROM used for booting. If not *null* then `BootVolume` has to be *null*. |
 
-After retrieving a server, either by getting it by id, or as a create response object, you can change its properties and call the `PartialUpdate` method:
+After retrieving a server, either by getting it by ID, or as a create response object, you can change its properties and call the `PartialUpdate` method:
 
     var updated = serverApi.PartialUpdate(DatacenterId, ServerId, new ServerProperties { Name ="Updated" });
 
@@ -448,18 +380,18 @@ After retrieving a server, either by getting it by id, or as a create response o
 
 #### Delete a Server
 
-This will remove a server from a VDC.
+Removes a server from a VDC.
 
 **Please Note**: This will not automatically remove the storage volume(s) attached to a server. A separate operation is required to delete a storage volume.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
 | DatacenterId | **yes** | string | The ID of the VDC. |
 | ServerId | **yes** | string | The ID of the server. |
 
-After retrieving a server, either by getting it by id, or as a create response object, you can call the `Delete` method directly:
+After retrieving a server, either by getting it by ID, or as a create response object, you can call the `Delete` method directly:
 
     var response = serverApi.Delete(DatacenterId, ServerId);
 
@@ -469,7 +401,7 @@ After retrieving a server, either by getting it by id, or as a create response o
 
 Retrieves a list of volumes attached to the server.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -477,7 +409,7 @@ The following table describes the request arguments:
 | ServerId | **yes** | string | The ID of the server. |
 | depth | no | int | The level of details returned. |
 
-After retrieving a server, either by getting it by id, or as a create response object, you can call the `FindAll` method directly:
+After retrieving a server, either by getting it by ID, or as a create response object, you can call the `FindAll` method directly:
 
     var all = attachedVolumesApi.FindAll(DatacenterId, ServerId);
 
@@ -485,9 +417,9 @@ After retrieving a server, either by getting it by id, or as a create response o
 
 #### Attach a Volume
 
-This will attach a pre-existing storage volume to the server.
+Attaches a pre-existing storage volume to the server.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -495,7 +427,7 @@ The following table describes the request arguments:
 | ServerId | **yes** | string | The ID of the server. |
 | VolumeId | **yes** | string | The ID of a storage volume. |
 
-After retrieving a server, either by getting it by id, or as a create response object, you can call the `AttachVolume` method directly.
+After retrieving a server, either by getting it by ID, or as a create response object, you can call the `AttachVolume` method directly.
 
     var resp = attachedVolumesApi.AttachVolume(DatacenterId, ServerId, new Volume { Id = VolumeId });
 
@@ -503,9 +435,9 @@ After retrieving a server, either by getting it by id, or as a create response o
 
 #### Retrieve an Attached Volume
 
-This will retrieve the properties of an attached volume.
+Retrieves the properties of an attached volume.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -514,7 +446,7 @@ The following table describes the request arguments:
 | VolumeId | **yes** | string | The ID of the attached volume. |
 | depth | no | int | The level of details returned. |
 
-After retrieving a server, either by getting it by id, or as a create response object, you can call the `FindById` method directly.
+After retrieving a server, either by getting it by ID, or as a create response object, you can call the `FindById` method directly.
 
     var attachedVol = attachedVolumesApi.FindById(DatacenterId, ServerId, VolumeId);
 
@@ -522,11 +454,11 @@ After retrieving a server, either by getting it by id, or as a create response o
 
 #### Detach a Volume
 
-This will detach the volume from the server. Depending on the volume `hot_unplug` settings, this may result in the server being rebooted.
+Detaches the volume from the server. Depending on the volume's `hot_unplug` settings, this may result in the server being rebooted.
 
 This will NOT delete the volume from your virtual data center. You will need to make a separate request to delete a volume.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -534,7 +466,7 @@ The following table describes the request arguments:
 | ServerId | **yes** | string | The ID of the server. |
 | VolumeId | **yes** | string | The ID of the attached volume. |
 
-After retrieving a server, either by getting it by id, or as a create response object, you can call the `DetachVolume` method directly.
+After retrieving a server, either by getting it by ID, or as a create response object, you can call the `DetachVolume` method directly.
 
     var resp = attachedVolumesApi.DetachVolume(DatacenterId,ServerId, VolumeId);
 
@@ -544,7 +476,7 @@ After retrieving a server, either by getting it by id, or as a create response o
 
 Retrieves a list of CD-ROMs attached to a server.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -552,7 +484,7 @@ The following table describes the request arguments:
 | ServerId | **yes** | string | The ID of the server. |
 | depth | no | int | The level of details returned. |
 
-After retrieving a server, either by getting it by id, or as a create response object, you can call the `FindAll` method directly.
+After retrieving a server, either by getting it by ID, or as a create response object, you can call the `FindAll` method directly.
 
     var listAttached = attachCDROMApi.FindAll(DatacenterId, ServerId);
 
@@ -560,9 +492,9 @@ After retrieving a server, either by getting it by id, or as a create response o
 
 #### Attach a CD-ROM
 
-You can attach a CD-ROM to an existing server.
+Attaches a CD-ROM to an existing server.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -570,7 +502,7 @@ The following table describes the request arguments:
 | ServerId | **yes** | string | The ID of the server. |
 | CdRomImageId | **yes** | string | The ID of a CD-ROM. |
 
-After retrieving a server, either by getting it by id, or as a create response object, you can call the `Attach` method directly.
+After retrieving a server, either by getting it by ID, or as a create response object, you can call the `Attach` method directly.
 
     var attached = attachCDROMApi.Attach(DatacenterId, ServerId, new Image { Id=CdRomImageId});
 
@@ -578,9 +510,9 @@ After retrieving a server, either by getting it by id, or as a create response o
 
 #### Retrieve an Attached CD-ROM
 
-You can retrieve a specific CD-ROM attached to the server.
+Retrieves a specific CD-ROM attached to the server.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -589,7 +521,7 @@ The following table describes the request arguments:
 | CdRomImageId | **yes** | string | The ID of the attached CD-ROM. |
 | depth | no | int | The level of details returned. |
 
-After retrieving a server, either by getting it by id, or as a create response object, you can call the `FindById` method directly.
+After retrieving a server, either by getting it by ID, or as a create response object, you can call the `FindById` method directly.
 
     var getAttached = attachCDROMApi.FindById(DatacenterId, ServerId, CdRomImageId);
 
@@ -597,9 +529,9 @@ After retrieving a server, either by getting it by id, or as a create response o
 
 #### Detach a CD-ROM
 
-This will detach a CD-ROM from the server.
+Detaches a CD-ROM from the server.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -607,7 +539,7 @@ The following table describes the request arguments:
 | ServerId | **yes** | string | The ID of the server. |
 | CdRomImageId | **yes** | string | The ID of the attached CD-ROM. |
 
-After retrieving a server, either by getting it by id, or as a create response object, you can call the `Detach` method directly.
+After retrieving a server, either by getting it by ID, or as a create response object, you can call the `Detach` method directly.
 
     var removed = attachCDROMApi.Detach(DatacenterId, ServerId, CdRomImageId);
 
@@ -615,16 +547,16 @@ After retrieving a server, either by getting it by id, or as a create response o
 
 #### Reboot a Server
 
-This will force a hard reboot of the server. Do not use this method if you want to gracefully reboot the machine. This is the equivalent of powering off the machine and turning it back on.
+Forces a hard reboot of the server. Do not use this method if you want to gracefully reboot the machine. This is the equivalent of powering off the machine and turning it back on.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
 | DatacenterId | **yes** | string | The ID of the VDC. |
 | ServerId | **yes** | string | The ID of the server. |
 
-After retrieving a server, either by getting it by id, or as a create response object, you can call the `Reboot` method directly.
+After retrieving a server, either by getting it by ID, or as a create response object, you can call the `Reboot` method directly.
 
     var resp = serverApi.Reboot(DatacenterId, ServerId);
 
@@ -632,16 +564,16 @@ After retrieving a server, either by getting it by id, or as a create response o
 
 #### Start a Server
 
-This will start a server. If the server's public IP was deallocated then a new IP will be assigned.
+Starts a server. If the server's public IP address was deallocated, a new IP address will be assigned.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
 | DatacenterId | **yes** | string | The ID of the VDC. |
 | ServerId | **yes** | string | The ID of the server. |
 
-After retrieving a server, either by getting it by id, or as a create response object, you can call the `Start` method directly.
+After retrieving a server, either by getting it by ID, or as a create response object, you can call the `Start` method directly.
 
     var start = serverApi.Start(DatacenterId, ServerId);
 
@@ -649,16 +581,16 @@ After retrieving a server, either by getting it by id, or as a create response o
 
 #### Stop a Server
 
-This will stop a server. The machine will be forcefully powered off, billing will cease, and the public IP, if one is allocated, will be deallocated.
+Stops a server. The machine will be forcefully powered off, billing will stop, and the public IP address, if one is allocated, will be deallocated.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
 | DatacenterId | **yes** | string | The ID of the VDC. |
 | ServerId | **yes** | string | The ID of the server. |
 
-After retrieving a server, either by getting it by id, or as a create response object, you can call the `Stop` method directly.
+After retrieving a server, either by getting it by ID, or as a create response object, you can call the `Stop` method directly.
 
     var error = serverApi.Stop(DatacenterId, ServerId);
 
@@ -666,15 +598,15 @@ After retrieving a server, either by getting it by id, or as a create response o
 
 ### Images
 
-Create an instance of the API class:
+Creates an instance of the API class:
 
     ImageApi imageApi = new ImageApi(Configuration);
 
 #### List Images
 
-Retrieve a list of images.
+Retrieves a list of images.
 
-The optional `depth` argument defines the level, one being the least and five being the most, of information returned with the response.
+The optional `depth` argument defines the level of information returned by the response. A depth of 1 returns the least amount of information; 5 returns the most.
 
     var list = imageApi.FindAll();
 
@@ -684,7 +616,7 @@ The optional `depth` argument defines the level, one being the least and five be
 
 Retrieves the attributes of a specific image.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -697,15 +629,15 @@ The following table describes the request arguments:
 
 ### Volumes
 
-Create an instance of the API class:
+Creates an instance of the API class:
 
     AttachedVolumesApi attachedVolumesApi = new AttachedVolumesApi(Configuration);
 
 #### List Volumes
 
-Retrieve a list of volumes within the virtual data center. If you want to retrieve a list of volumes attached to a server please see the [List Attached Volumes](#list-attached-volumes) entry in the Server section for details.
+Retrieves a list of volumes within the virtual data center. If you want to retrieve a list of volumes attached to a server please see the [List Attached Volumes](#list-attached-volumes) entry in the Server section for details.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -720,7 +652,7 @@ The following table describes the request arguments:
 
 Retrieves the attributes of a given volume.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -736,7 +668,7 @@ The following table describes the request arguments:
 
 Creates a volume within the VDC. This will NOT attach the volume to a server. Please see the [Attach a Volume](#attach-a-volume) entry in the Server section for details on how to attach storage volumes.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -763,21 +695,21 @@ Call the `Create` method and pass in the arguments including the `volume` object
 
 ##### Volume Object Reference
 
-This table shows the properties of a `Volume` object:
+**Volume Object Properties**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| Name | no | string | The name of the volume. |
 | Size | **yes** | int | The size of the volume in GB. |
-| Bus | no | string | The bus type of the volume (VIRTIO or IDE). Default: VIRTIO. |
 | Image | **yes** | string | The image or snapshot ID. |
 | Type | **yes** | string | The volume type, HDD or SSD. |
 | LicenceType | **yes** | string | The licence type of the volume. Options: LINUX, WINDOWS, WINDOWS2016, UNKNOWN, OTHER |
 | ImagePassword | **yes** | string | One-time password is set on the Image for the appropriate root or administrative account. This field may only be set in creation requests. When reading, it always returns *null*. The password has to contain 8-50 characters. Only these characters are allowed: [abcdefghjkmnpqrstuvxABCDEFGHJKLMNPQRSTUVX23456789] |
 | SshKeys | **yes** | string | SSH keys to allow access to the volume via SSH. |
+| Name | no | string | The name of the volume. |
+| Bus | no | string | The bus type of the volume (VIRTIO or IDE). Default: VIRTIO. |
 | AvailabilityZone | no | string | The storage availability zone assigned to the volume. Valid values: AUTO, ZONE_1, ZONE_2, or ZONE_3. This only applies to HDD volumes. Leave blank or set to AUTO when provisioning SSD volumes. |
 
-The following table outlines the various licence types you can define:
+**Licence Types**
 
 | Licence Type | Comment |
 |---|---|
@@ -787,7 +719,7 @@ The following table outlines the various licence types you can define:
 | OTHER | Use this for any volumes that do not match one of the other licence types. |
 | UNKNOWN | This value may be inherited when you've uploaded an image and haven't set the license type. Use one of the options above instead. |
 
-The following table outlines the volume (storage) availability zones currently supported:
+**Supported Volume (Storage) Availability Zones**
 
 | Availability Zone | Comment |
 |---|---|
@@ -802,13 +734,16 @@ The following table outlines the volume (storage) availability zones currently s
 
 #### Update a Volume
 
-You can update -- in full or partially -- various attributes on the volume; however, some restrictions are in place:
+Various attributes on the volume can be updated (either in full or partially) although the following restrictions apply: 
 
-You can increase the size of an existing storage volume. You cannot reduce the size of an existing storage volume. The volume size will be increased without requiring a reboot if the relevant hot plug settings have been set to *true*. The additional capacity is not added automatically added to any partition, therefore you will need to handle that inside the OS afterwards. Once you have increased the volume size you cannot decrease the volume size.
+* The size of an existing storage volume can be increased. It cannot be reduced.
+* The volume size will be increased without requiring a reboot if the relevant hot plug settings have been set to `true`. 
+* The additional capacity is not added automatically added to any partition, therefore you will need to handle that inside the OS afterwards. 
+* After you have increased the volume size you cannot decrease the volume size.
 
 Since an existing volume is being modified, none of the request arguments are specifically required as long as the changes being made satisfy the requirements for creating a volume.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -822,7 +757,7 @@ The following table describes the request arguments:
 | LicenceType | no | string | The licence type of the volume. Options: LINUX, WINDOWS, WINDOWS2016, UNKNOWN, OTHER |
 | AvailabilityZone | no | string | The storage availability zone assigned to the volume. Valid values: AUTO, ZONE_1, ZONE_2, or ZONE_3. This only applies to HDD volumes. Leave blank or set to AUTO when provisioning SSD volumes. |
 
-After retrieving a volume, either by getting it by id, or as a create response object, you can change its properties and call the `PartialUpdate` method:
+After retrieving a volume, either by getting it by ID, or as a create response object, you can change its properties and call the `PartialUpdate` method:
 
     var newVolume = volumeApi.PartialUpdate(DatacenterId, VolumeId, new VolumeProperties { Size = volume.Properties.Size + 1 });
 
@@ -834,7 +769,7 @@ After retrieving a volume, either by getting it by id, or as a create response o
 
 Deletes the specified volume. This will result in the volume being removed from your VDC. Use this with caution.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -851,7 +786,7 @@ After retrieving a volume, either by getting it by id, or as a create response o
 
 Creates a snapshot of a volume within the virtual data center. You can use a snapshot to create a new storage volume or to restore a storage volume.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -860,7 +795,7 @@ The following table describes the request arguments:
 | Name | no | string | The name of the snapshot. |
 | Description | no | string | The description of the snapshot. |
 
-After retrieving a volume, either by getting it by id, or as a create response object, you can call the `CreateSnapshot` method directly.
+After retrieving a volume, either by getting it by ID, or as a create response object, you can call the `CreateSnapshot` method directly.
 
     var resp = volumeApi.CreateSnapshot(DatacenterId, VolumeId, Name, Description);
 
@@ -868,9 +803,9 @@ After retrieving a volume, either by getting it by id, or as a create response o
 
 #### Restore a Volume Snapshot
 
-This will restore a snapshot onto a volume. A snapshot is created as just another image that can be used to create new volumes or to restore an existing volume.
+Restores a snapshot onto a volume. A snapshot is created as just another image that can be used to create new volumes or to restore an existing volume.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -885,15 +820,15 @@ After retrieving a volume, either by getting it by id, or as a create response o
 
 ### Snapshots
 
-Create an instance of the API class:
+Creates an instance of the API class:
 
     SnapshotApi snapshotApi = new SnapshotApi(Configuration);
 
 #### List Snapshots
 
-You can retrieve a list of all available snapshots.
+Retrieves a list of all available snapshots.
 
-The optional `depth` argument defines the level, one being the least and five being the most, of information returned with the response.
+The optional `depth` argument defines the level of information returned by the response. A depth of 1 returns the least amount of information; 5 returns the most.
 
     var list = snapshotApi.FindAll(depth: 5);
 
@@ -903,7 +838,7 @@ The optional `depth` argument defines the level, one being the least and five be
 
 Retrieves the attributes of a specific snapshot.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -916,9 +851,9 @@ The following table describes the request arguments:
 
 #### Update a Snapshot
 
-Perform updates to attributes of a snapshot.
+Performs updates to attributes of a snapshot.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -937,7 +872,7 @@ The following table describes the request arguments:
 | DiscScsiHotPlug | no | bool | This volume is capable of SCSI drive hot plug (no reboot required) |
 | DiscScsiHotUnplug | no | bool | This volume is capable of SCSI drive hot unplug (no reboot required) |
 
-After retrieving a snapshot, either by getting it by id, or as a create response object, you can change its properties and call the `PartialUpdate` method:
+After retrieving a snapshot, either by getting it by ID, or as a create response object, you can change its properties and call the `PartialUpdate` method:
 
     var updated = snapshotApi.PartialUpdate(SnapshotId, new SnapshotProperties { Name ="Updated" });
 
@@ -949,13 +884,13 @@ After retrieving a snapshot, either by getting it by id, or as a create response
 
 Deletes the specified snapshot.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
 | SnapshotId | **yes** | string | The ID of the snapshot. |
 
-After retrieving a snapshot, either by getting it by id, or as a create response object, you can call the `Delete` method directly.
+After retrieving a snapshot, either by getting it by ID, or as a create response object, you can call the `Delete` method directly.
 
     var resp = snapshotApi.Delete(SnapshotId);
 
@@ -963,7 +898,7 @@ After retrieving a snapshot, either by getting it by id, or as a create response
 
 ### IP Blocks
 
-The IP block operations assist with managing reserved /static public IP addresses.
+The IP block operations assist with managing reserved static public IP addresses.
 
 Create an instance of the API class:
 
@@ -971,21 +906,21 @@ Create an instance of the API class:
 
 #### List IP Blocks
 
-Retrieve a list of available IP blocks.
+Retrieves a list of available IP address blocks.
 
-The optional `depth` argument defines the level, one being the least and five being the most, of information returned with the response.
+The optional `depth` argument defines the level of information returned by the response. A depth of 1 returns the least amount of information; 5 returns the most.
 
     var list = ipApi.FindAll();
 
 #### Get an IP Block
 
-Retrieves the attributes of a specific IP block.
+Retrieves the attributes of a specific IP address block.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| IpBlockId | **yes** | string | The ID of the IP block. |
+| IpBlockId | **yes** | string | The ID of the IP address block. |
 | depth | no | int | The level of details returned. |
 
     var ip = ipApi.FindById(IpBlockId);
@@ -994,9 +929,9 @@ The following table describes the request arguments:
 
 #### Create an IP Block
 
-Creates an IP block. IP blocks are attached to a location, so you must specify a valid `location` along with a `size` argument indicating the number of IP addresses you want to reserve in the IP block. Servers or other resources using an IP address from an IP block must be in the same `location`.
+Creates an IP address block. IP blocks are attached to a location, so you must specify a valid `location` along with a `size` argument indicating the number of IP addresses you want to reserve in the IP block. Servers or other resources using an IP address from an IP block must be in the same `location`.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -1025,7 +960,7 @@ Call the `Create` method and pass in the `ipBlock` object:
 | Size | **yes** | int | The size of the IP block you want. |
 | Name | no | string | A descriptive name for the IP block |
 
-The following table outlines the locations currently supported:
+**Supported Locations**
 
 | Value| Country | City |
 |---|---|---|
@@ -1040,13 +975,13 @@ The following table outlines the locations currently supported:
 
 Deletes the specified IP Block.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
 | IpBlockId | **yes** | string | The ID of the IP block. |
 
-After retrieving an IP block, either by getting it by id, or as a create response object, you can call the `Delete` method directly.
+After retrieving an IP block, either by getting it by ID, or as a create response object, you can call the `Delete` method directly.
 
     var resp = ipApi.Delete(IpBlockId);
 
@@ -1056,9 +991,9 @@ After retrieving an IP block, either by getting it by id, or as a create respons
 
 #### List LANs
 
-Retrieve a list of LANs within the VDC.
+Retrieves a list of LANs within the VDC.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -1073,7 +1008,7 @@ The following table describes the request arguments:
 
 Creates a LAN within a VDC.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -1110,8 +1045,8 @@ Call the `Create` method and pass in the arguments including the `lan` object:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| Name | no | string | The name of your LAN. |
 | Public | **Yes** | bool | Boolean indicating if the LAN faces the public Internet or not. |
+| Name | no | string | The name of your LAN. |
 | Nics | no | object | A collection of NICs associated with the LAN. |
 
 ---
@@ -1120,7 +1055,7 @@ Call the `Create` method and pass in the arguments including the `lan` object:
 
 Retrieves the attributes of a given LAN.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -1134,9 +1069,9 @@ The following table describes the request arguments:
 
 #### Update a LAN
 
-Perform updates to attributes of a LAN.
+Performs updates to attributes of a LAN.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -1145,7 +1080,7 @@ The following table describes the request arguments:
 | Name | no | string | A descriptive name for the LAN. |
 | Public | no | bool | Boolean indicating if the LAN faces the public Internet or not. |
 
-After retrieving a LAN, either by getting it by id, or as a create response object, you can change its properties and call the `PartialUpdate` method:
+After retrieving a LAN, either by getting it by ID, or as a create response object, you can change its properties and call the `PartialUpdate` method:
 
     var updated = lanApi.PartialUpdate(DatacenterId, LanId, new LanProperties { Public = True });
 
@@ -1157,14 +1092,14 @@ After retrieving a LAN, either by getting it by id, or as a create response obje
 
 Deletes the specified LAN.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
 | DatacenterId | **yes** | string | The ID of the VDC. |
 | LanId | **yes** | string | The ID of the LAN. |
 
-After retrieving a LAN, either by getting it by id, or as a create response object, you can call the `Delete` method directly.
+After retrieving a LAN, either by getting it by ID, or as a create response object, you can call the `Delete` method directly.
 
     lanApi.Delete(DatacenterId,LanId);
 
@@ -1172,15 +1107,15 @@ After retrieving a LAN, either by getting it by id, or as a create response obje
 
 ### Network Interfaces
 
-Create an instance of the API class:
+Creates an instance of the API class:
 
     NetworkInterfacesApi nicApi = new NetworkInterfacesApi(Configuration);
 
 #### List NICs
 
-Retrieve a list of LANs within the virtual data center.
+Retrieves a list of LANs within the virtual data center.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -1196,7 +1131,7 @@ The following table describes the request arguments:
 
 Retrieves the attributes of a given NIC.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -1213,7 +1148,7 @@ The following table describes the request arguments:
 
 Adds a NIC to the target server.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -1240,10 +1175,10 @@ Call the `Create` method and pass in the arguments including the `nic` object:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| Name | no | string | The name of the NIC. |
-| Ips | no | string collection | IPs assigned to the NIC. This can be a collection. |
-| Dhcp | no | bool | Set to FALSE if you wish to disable DHCP on the NIC. Default: TRUE. |
 | Lan | **yes** | int | The LAN ID the NIC will sit on. If the LAN ID does not exist it will be created. |
+| Name | no | string | The name of the NIC. |
+| Ips | no | string collection | IP addresses assigned to the NIC. This can be a collection. |
+| Dhcp | no | bool | Set to FALSE if you wish to disable DHCP on the NIC. Default: TRUE. |
 | Nat | no | bool | Indicates the private IP address has outbound access to the public internet. |
 | FirewallActive | no | bool | Once you add a firewall rule this will reflect a true value. |
 | FirewallRules | no | object| A list of firewall rules associated to the NIC represented as a collection. |
@@ -1252,13 +1187,14 @@ Call the `Create` method and pass in the arguments including the `nic` object:
 
 #### Update a NIC
 
-You can update -- in full or partially -- various attributes on the NIC; however, some restrictions are in place:
+Various attributes on the volume can be updated (either in full or partially) although the following restrictions apply: 
 
-The primary address of a NIC connected to a load balancer can only be changed by changing the IP of the load balancer. You can also add additional reserved, public IPs to the NIC.
+* The primary address of a NIC connected to a load balancer can only be changed by changing the IP address of the load balancer. 
+* You can also add additional reserved, public IP addresses to the NIC.
 
-The user can specify and assign private IPs manually. Valid IP addresses for private networks are 10.0.0.0/8, 172.16.0.0/12 or 192.168.0.0/16.
+The user can specify and assign private IP addresses manually. Valid IP addresses for private networks are 10.0.0.0/8, 172.16.0.0/12 or 192.168.0.0/16.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -1266,12 +1202,12 @@ The following table describes the request arguments:
 | ServerId | **yes** | string| The ID of the server. |
 | NicId | **yes** | string| The ID of the NIC. |
 | Name | no | string | The name of the NIC. |
-| Ips | no | string collection | IPs assigned to the NIC represented as a collection. |
+| Ips | no | string collection | IP addresses assigned to the NIC represented as a collection. |
 | Dhcp | no | bool | Boolean value that indicates if the NIC is using DHCP or not. |
 | Lan | no | int | The LAN ID the NIC sits on. |
 | Nat | no | bool | Indicates the private IP address has outbound access to the public internet. |
 
-After retrieving a NIC, either by getting it by id, or as a create response object, you can call the `PartialUpdate` method directly.
+After retrieving a NIC, either by getting it by ID, or as a create response object, you can call the `PartialUpdate` method directly.
 
     var updated = nicApi.PartialUpdate(DatacenterId, ServerId, NicId, new NicProperties { Name ="Update", Ips = new System.Collections.Generic.List<string> { "10.8.52.225", "1.1.1.1" } });
 
@@ -1283,7 +1219,7 @@ After retrieving a NIC, either by getting it by id, or as a create response obje
 
 Deletes the specified NIC.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -1291,7 +1227,7 @@ The following table describes the request arguments:
 | ServerId | **yes** | string| The ID of the server. |
 | NicId | **yes** | string| The ID of the NIC. |
 
-After retrieving a NIC, either by getting it by id, or as a create response object, you can call the `Delete` method directly.
+After retrieving a NIC, either by getting it by ID, or as a create response object, you can call the `Delete` method directly.
 
     var resp = nicApi.Delete(DatacenterId, ServerId, NicId);
 
@@ -1299,7 +1235,7 @@ After retrieving a NIC, either by getting it by id, or as a create response obje
 
 ### Firewall Rules
 
-Create an instance of the API class:
+Creates an instance of the API class:
 
     FirewallRuleApi fwApi = new FirewallRuleApi(Configuration);
 
@@ -1307,7 +1243,7 @@ Create an instance of the API class:
 
 Retrieves a list of firewall rules associated with a particular NIC.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -1324,7 +1260,7 @@ The following table describes the request arguments:
 
 Retrieves the attributes of a given firewall rule.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -1340,9 +1276,9 @@ The following table describes the request arguments:
 
 #### Create a Firewall Rule
 
-This will add a firewall rule to the NIC.
+Adds a firewall rule to the NIC.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -1363,11 +1299,11 @@ Call the `Create` method and pass in the arguments including the `fw` object:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| Name | no | string | The name of the firewall rule. |
 | Protocol | **yes** | string | The protocol for the rule: TCP, UDP, ICMP, ANY. |
+| Name | no | string | The name of the firewall rule. |
 | SourceMac | no | string | Only traffic originating from the respective MAC address is allowed. Valid format: aa:bb:cc:dd:ee:ff. A *null* value allows all source MAC address. |
-| SourceIp | no | string | Only traffic originating from the respective IPv4 address is allowed. A *null* value allows all source IPs. |
-| TargetIp | no | string | In case the target NIC has multiple IP addresses, only traffic directed to the respective IP address of the NIC is allowed. A *null* value allows all target IPs. |
+| SourceIp | no | string | Only traffic originating from the respective IPv4 address is allowed. A *null* value allows all source IP addresses. |
+| TargetIp | no | string | In case the target NIC has multiple IP addresses, only traffic directed to the respective IP address of the NIC is allowed. A *null* value allows all target IP addresses. |
 | PortRangeStart | no | string | Defines the start range of the allowed port (from 1 to 65534) if protocol TCP or UDP is chosen. Leave `PortRangeStart` and `PortRangeEnd` value as *null* to allow all ports. |
 | PortRangeEnd | no | string | Defines the end range of the allowed port (from 1 to 65534) if the protocol TCP or UDP is chosen. Leave `PortRangeStart` and `PortRangeEnd` value as *null* to allow all ports. |
 | IcmpType | no | string | Defines the allowed type (from 0 to 254) if the protocol ICMP is chosen. A *null* value allows all types. |
@@ -1377,9 +1313,9 @@ Call the `Create` method and pass in the arguments including the `fw` object:
 
 #### Update a Firewall Rule
 
-Perform updates to attributes of a firewall rule.
+Performs updates to attributes of a firewall rule.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -1389,14 +1325,14 @@ The following table describes the request arguments:
 | FirewallRuleId | **yes** | string | The ID of the firewall rule. |
 | Name | no | string | The name of the firewall rule. |
 | SourceMac | no | string | Only traffic originating from the respective MAC address is allowed. Valid format: aa:bb:cc:dd:ee:ff. A *null* value allows all source MAC address. |
-| SourceIp | no | string | Only traffic originating from the respective IPv4 address is allowed. A *null* value allows all source IPs. |
-| TargetIp | no | string | In case the target NIC has multiple IP addresses, only traffic directed to the respective IP address of the NIC is allowed. A *null* value allows all target IPs. |
+| SourceIp | no | string | Only traffic originating from the respective IPv4 address is allowed. A *null* value allows all source IP addresses. |
+| TargetIp | no | string | In case the target NIC has multiple IP addresses, only traffic directed to the respective IP address of the NIC is allowed. A *null* value allows all target IP addresses. |
 | PortRangeStart | no | string | Defines the start range of the allowed port (from 1 to 65534) if protocol TCP or UDP is chosen. Leave `port_range_start` and `port_range_end` value as *null* to allow all ports. |
 | PortRangeEnd | no | string | Defines the end range of the allowed port (from 1 to 65534) if the protocol TCP or UDP is chosen. Leave `port_range_start` and `port_range_end` value as *null* to allow all ports. |
 | IcmpType | no | string | Defines the allowed type (from 0 to 254) if the protocol ICMP is chosen. A *null* value allows all types. |
 | IcmpCode | no | string | Defines the allowed code (from 0 to 254) if protocol ICMP is chosen. A *null* value allows all codes. |
 
-After retrieving a firewall rule, either by getting it by id, or as a create response object, you can change its properties and call the `PartialUpdate` method:
+After retrieving a firewall rule, either by getting it by ID, or as a create response object, you can change its properties and call the `PartialUpdate` method:
 
     var updated = fwApi.PartialUpdate(DatacenterId, ServerId, NicId, FirewallRuleId, new FirewallruleProperties {Name = "Updated" });
 
@@ -1415,7 +1351,7 @@ Removes the specific firewall rule.
 | NicId | **yes** | string | The ID of the NIC. |
 | FirewallRuleId | **yes** | string | The ID of the firewall rule. |
 
-After retrieving a firewall rule, either by getting it by id, or as a create response object, you can call the `Delete` method directly.
+After retrieving a firewall rule, either by getting it by ID, or as a create response object, you can call the `Delete` method directly.
 
     var resp = fwApi.Delete(DatacenterId, ServerId, NicId, FirewallRuleId);
 
@@ -1423,15 +1359,15 @@ After retrieving a firewall rule, either by getting it by id, or as a create res
 
 ### Load Balancers
 
-Create an instance of the API class:
+Creates an instance of the API class:
 
     LoadBalancerApi lbApi = new LoadBalancerApi(Configuration)
 
 #### List Load Balancers
 
-Retrieve a list of load balancers within the data center.
+Retrieves a list of load balancers within the data center.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -1446,7 +1382,7 @@ The following table describes the request arguments:
 
 Retrieves the attributes of a given load balancer.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -1460,9 +1396,9 @@ The following table describes the request arguments:
 
 #### Create a Load Balancer
 
-Creates a load balancer within the virtual data center. Load balancers can be used for public or private IP traffic.
+Creates a load balancer within the virtual data center. Load balancers can be used for traffic on either public or private IP addresses.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -1488,27 +1424,27 @@ Call the `Create` method and pass in the arguments including the `lb` object:
 | Name| Required | Type | Description |
 |---|:-:|---|---|
 | Name | **yes** | string | The name of the load balancer. |
-| Ip | no | string | IPv4 address of the load balancer. All attached NICs will inherit this IP. |
-| Dhcp | no | bool | Indicates if the load balancer will reserve an IP using DHCP. |
-| BalancedNics | no | string collection | List of NICs taking part in load-balancing. All balanced NICs inherit the IP of the load balancer. |
+| Ip | no | string | IPv4 address of the load balancer. All attached NICs will inherit this IP address. |
+| Dhcp | no | bool | Indicates if the load balancer will reserve an IP address using DHCP. |
+| BalancedNics | no | string collection | List of NICs taking part in load-balancing. All balanced NICs inherit the IP address of the load balancer. |
 
 ---
 
 #### Update a Load Balancer
 
-Perform updates to attributes of a load balancer.
+Performs updates to attributes of a load balancer.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
 | DatacenterId | **yes** | string | The ID of the VDC. |
 | LoadBalancerId | **yes** | string | The ID of the load balancer. |
 | Name | no | string | The name of the load balancer. |
-| Ip | no | string | The IP of the load balancer. |
-| Dhcp | no | bool | Indicates if the load balancer will reserve an IP using DHCP. |
+| Ip | no | string | The IP address of the load balancer. |
+| Dhcp | no | bool | Indicates if the load balancer will reserve an IP address using DHCP. |
 
-After retrieving a load balancer, either by getting it by id, or as a create response object, you can change it's properties and call the `PartialUpdate` method:
+After retrieving a load balancer, either by getting it by ID, or as a create response object, you can change its properties and call the `PartialUpdate` method:
 
     var newLb = lbApi.PartialUpdate(DatacenterId, LoadBalancerId, new LoadbalancerProperties { Name = "Updated" });
 
@@ -1520,14 +1456,14 @@ After retrieving a load balancer, either by getting it by id, or as a create res
 
 Deletes the specified load balancer.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
 | DatacenterId | **yes** | string | The ID of the VDC. |
 | LoadBalancerId | **yes** | string | The ID of the load balancer. |
 
-After retrieving a load balancer, either by getting it by id, or as a create response object, you can call the `Delete` method directly.
+After retrieving a load balancer, either by getting it by ID, or as a create response object, you can call the `Delete` method directly.
 
     var resp = lbApi.Delete(DatacenterId, LoadBalancerId);
 
@@ -1535,9 +1471,9 @@ After retrieving a load balancer, either by getting it by id, or as a create res
 
 #### List Load Balanced NICs
 
-This will retrieve a list of NICs associated with the load balancer.
+Retrieves a list of NICs associated with the load balancer.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -1545,7 +1481,7 @@ The following table describes the request arguments:
 | LoadBalancerId | **yes** | string | The ID of the load balancer. |
 | depth | no | int | The level of details returned. |
 
-After retrieving a load balancer, either by getting it by id, or as a create response object, you can call the `FindAll` method directly.
+After retrieving a load balancer, either by getting it by ID, or as a create response object, you can call the `FindAll` method directly.
 
 ```
  var BalancedNics = lbApi.FindAll(DatacenterId, LoadBalancerId, depth);
@@ -1557,7 +1493,7 @@ After retrieving a load balancer, either by getting it by id, or as a create res
 
 Retrieves the attributes of a given load balanced NIC.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -1566,7 +1502,7 @@ The following table describes the request arguments:
 | NicId | **yes** | string | The ID of the NIC. |
 | depth | no | int | The level of details returned. |
 
-After retrieving a load balancer, either by getting it by id, or as a create response object, you can call the `get_loadbalanced_nic` method directly.
+After retrieving a load balancer, either by getting it by ID, or as a create response object, you can call the `get_loadbalanced_nic` method directly.
 
 ```
 var balancedNic = lbApi.FindById(DatacenterId, LoadBalancerId, NicId, depth);
@@ -1576,9 +1512,9 @@ var balancedNic = lbApi.FindById(DatacenterId, LoadBalancerId, NicId, depth);
 
 #### Associate NIC to a Load Balancer
 
-This will associate a NIC to a load balancer, enabling the NIC to participate in load-balancing.
+Associates a NIC to a load balancer, enabling the NIC to participate in load-balancing.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -1586,7 +1522,7 @@ The following table describes the request arguments:
 | LoadBalancerId | **yes** | string | The ID of the load balancer. |
 | NicId | **yes** | string | The ID of the NIC. |
 
-After retrieving a load balancer, either by getting it by id, or as a create response object, you can call the `AttachNic` method directly.
+After retrieving a load balancer, either by getting it by ID, or as a create response object, you can call the `AttachNic` method directly.
 
     NetworkInterfacesApi nicApi = new NetworkInterfacesApi(Configuration);
     var attachedNic = nicApi.AttachNic(DatacenterId, LoadBalancerId, new Nic { Id = NicId });
@@ -1597,7 +1533,7 @@ After retrieving a load balancer, either by getting it by id, or as a create res
 
 Removes the association of a NIC with a load balancer.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -1605,7 +1541,7 @@ The following table describes the request arguments:
 | LoadBalancerId | **yes** | string | The ID of the load balancer. |
 | NicId | **yes** | string | The ID of the NIC. |
 
-After retrieving a load balancer, either by getting it by id, or as a create response object, you can call the `DetachNic` method directly.
+After retrieving a load balancer, either by getting it by ID, or as a create response object, you can call the `DetachNic` method directly.
 
     var resp = nicApi.DetachNic(DatacenterId, LoadBalancerId, NicId);
 
@@ -1621,7 +1557,7 @@ Create an instance of the API class:
 
 #### List Requests
 
-Retrieve a list of requests.
+Retrieves a list of requests.
 
     var requests = reqApi.List();
 
@@ -1631,7 +1567,7 @@ Retrieve a list of requests.
 
 Retrieves the attributes of a specific request.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -1645,7 +1581,7 @@ The following table describes the request arguments:
 
 Retrieves the status of a request.
 
-The following table describes the request arguments:
+**Request Arguments**
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -1667,7 +1603,7 @@ ProfitBricks utilizes the concept of virtual data centers. These are logically s
 
 You are required to have a virtual data center created before you can create any other objects. Think of the virtual data center as a bucket in which all objects, such as servers and volumes, live.
 
-The following code example shows you how to programmatically create a data center:
+The following code example shows how to programmatically create a data center:
 
 
     namespace ProfitbricksV2.Example
@@ -1707,15 +1643,15 @@ The following code example shows you how to programmatically create a data cente
 
 ### Delete Virtual Data Center
 
-You will want to exercise a bit of caution here. Removing a virtual data center will **destroy** all objects contained within that virtual data center -- servers, volumes, snapshots, and so on. The objects -- once removed -- will **NOT be recoverable**.
+Use caution when deleting a data center. Deleting a data center will **destroy** all objects contained within that data center -- including all servers, volumes, snapshots, etc. **When the objects are deleted** they **cannot be recovered**.
 
-The following is an example of how to remove the virtual data center created above:
+This example deletes the virtual data center created above:
 
     dcApi.Delete(datacenter.Id);
 
 ### Create Server
 
-The following example illustrates how you would create a server and assign it a number of processing cores and memory. This example also shows specifying the *CpuFamily* as "INTEL_XEON" rather than the default of "AMD_OPTERON" You may wish to refer to the Cloud API documentation to see the complete list of attributes available.
+This example creates a server and assigns it a number of processing cores and memory. This example also shows specifying the `CpuFamily` as "INTEL_XEON" rather than the default of "AMD_OPTERON" You may wish to refer to the Cloud API documentation to see the complete list of attributes available.
 
     var server = new Server
     {
@@ -1731,21 +1667,21 @@ The following example illustrates how you would create a server and assign it a 
     // response will contain Id of a newly created server.
     server = serverApi.Create(datacenter.Id, server);
 
-One of the unique features of the ProfitBricks platform when compared with some other cloud providers is that it enables you to set the values for cores, memory, and volume size independently. You are not required to provision your servers by selecting  from a set of pre-sized "instances."
+One of the unique features of the ProfitBricks platform is that it allows you to define your own settings for cores, memory, and disk size without being tied to a particular instance size.  
 
 ### Update Cores, Memory, and Disk
 
-ProfitBricks allows users to dynamically update the values assigned to cores, memory, and disk independently of each other. This removes the restriction of needing to upgrade to the next server or instance size just to get access to more memory. This helps manage costs as provisioned resources can be configured to match your actual resource needs.
+ProfitBricks allows users to dynamically update cores and memory independently of each other. This means that you do not have to upgrade to the larger size in order to increase memory. You can simply increase the instance's memory, which keeps your costs in line with your resource needs. 
 
-The following code illustrates how you can update cores and memory:
+This example updates cores and memory:
 
     server = serverApi.PartialUpdate(datacenter.Id, server.Id, new ServerProperties { Name = server.Properties.Name + " -Updated" });
 
 ### Detach and Reattach a Storage Volume
 
-ProfitBricks allows for the creation of multiple storage volumes. You can detach and reattach these on the fly. This allows for various scenarios such as re-attaching a failed OS disk to another server for possible recovery or moving a volume to another location and re-attaching it to a different server.
+ProfitBricks allows for the creation of multiple storage volumes. You can attach and detach these on the fly. This is helpful in scenarios such as attaching a failed OS disk to another server for recovery, or moving a volume to another server to bring online.
 
-The following illustrates how you would create a new 40 GB volume:
+This example creates a new 40 GB volume:
 
     //First we need to create a volume.
     var volume = new Volume
@@ -1763,20 +1699,20 @@ The following illustrates how you would create a new 40 GB volume:
 
     volume = volumeApi.Create(datacenter.Id, volume);
 
-Please review these notes about the create volume example:
+**Notes:**
 
-* The value supplied for *Image* is an example and is unlikely to be valid. ProfitBricks supplies a number of different images for various operating systems. These images are updated from time to time and these updates often result in a new UUID being issued. The .NET SDK can help you to locate valid image IDs. There are also [CLI](https://devops.profitbricks.com/tools/cli) and [PowerShell](https://devops.profitbricks.com/tools/powershell) tools available on [DevOps Central](https://devops.profitbricks.com/tools/) that can help you find the currently available UUIDs.
+* The value supplied for `Image` is an example and is unlikely to be valid. 
+* ProfitBricks supplies a number of different images for various operating systems. These images are updated from time to time and these updates often result in a new UUID being issued. 
+* The .NET SDK can help you to locate valid image IDs. There are also [CLI](https://devops.profitbricks.com/tools/cli) and [PowerShell](https://devops.profitbricks.com/tools/powershell) tools available on [DevOps Central](https://devops.profitbricks.com/tools/) which can help you find the currently available UUIDs.
+* The value supplied for `Type` can be set to "HDD" or "SSD", depending on what storage type you want to use.
+* Either `ImagePassword` or `SshKeys` needs to be set for volumes. It is possible to set both, however, `SshKeys` are only applicable to Linux images. Therefore you **MUST** provide an `ImagePassword` when creating volumes based on a Microsoft Windows Image.
 
-* The value supplied for *Type* can be set to "HDD" or "SSD", depending on what storage type you want to use.
-
-* Volumes **need** to have either an *ImagePassword* or *SshKeys* set. It is possible to set both, however, *SshKeys* are only applicable to Linux images. Therefore you **MUST** provide an *ImagePassword* when creating volumes based on a Microsoft Windows *Image*.
-
-To attach the volume to a server identified by *server.Id*:
+Attach the volume to a server identified by `server.Id`:
 
     //Then we are going to attach the newly volume to a server.
     attachedVolumesApi.AttachVolume(datacenter.Id, server.Id, new Volume { Id = volume.Id });
 
-To detach the volume from a server identified by *server.Id*:
+Detach the volume from a server identified by `server.Id`:
 
     //Here we are going to detach it from the server.
     attachedVolumesApi.DetachVolume(datacenter.Id, server.Id, volume.Id);
@@ -1785,7 +1721,7 @@ To detach the volume from a server identified by *server.Id*:
 
 You can pull various resource lists from your virtual data centers using the .NET library. The three most commonly queried resources are virtual data centers, servers, and volumes.
 
-The following code illustrates how to pull these three list types:
+Examples of how to pull these three list types:
 
     var dcs = dcApi.FindAll(depth: 5);
     var servers = serverApi.FindAll(datacenter.Id, depth: 5);
@@ -1795,7 +1731,7 @@ The following code illustrates how to pull these three list types:
 
 The ProfitBricks cloud platform supports adding multiple NICs to a server. These NICs can be used to create different, segmented networks on the platform.
 
-The sample below shows you how to add a second NIC to an existing server:
+This example adds a second NIC to an existing server:
 
     var nic = new Nic { Properties = new NicProperties { Lan = 1 , Dhcp = true, Name = "Nic name"} };
 
@@ -1925,7 +1861,7 @@ The sample below shows you how to add a second NIC to an existing server:
 
 ## Support
 
-You can engage with us in the ProfitBricks [DevOps Central community](https://devops.profitbricks.com/community) and we'll be more than happy to answer any questions you might have about using this .NET library.
+You can engage with us on the ProfitBricks [DevOps Central community](https://devops.profitbricks.com/community) site where we will be happy to answer any questions you might have about using this .NET library.
 
 Please report any issues or bugs your encounter using the [GitHub Issue Tracker](https://github.com/profitbricks/profitbricks-sdk-net/issues).
 
