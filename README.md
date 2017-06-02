@@ -10,85 +10,85 @@ Version: profitbricks-sdk-net **3.0.4**
     * [Authenticating](#authenticating)
 * [Reference](#reference)
     * [Data Centers](#data-centers)
-      * [List Data Centers](#list-data-centers)
-      * [Retrieve a Data Center](#retrieve-a-data-center)
-      * [Create a Data Center](#create-a-data-center)
-      * [Update a Data Center](#update-a-data-center)
-      * [Delete a Data Center](#delete-a-data-center)
+        * [List Data Centers](#list-data-centers)
+        * [Retrieve a Data Center](#retrieve-a-data-center)
+        * [Create a Data Center](#create-a-data-center)
+        * [Update a Data Center](#update-a-data-center)
+        * [Delete a Data Center](#delete-a-data-center)
     * [Locations](#locations)
-      * [List Locations](#list-locations)
-      * [Get a Location](#get-a-location)
+        * [List Locations](#list-locations)
+        * [Get a Location](#get-a-location)
     * [Servers](#servers)
-      * [List Servers](#list-servers)
-      * [Retrieve a Server](#retrieve-a-server)
-      * [Create a Server](#create-a-server)
-      * [Update a Server](#update-a-server)
-      * [Delete a Server](#delete-a-server)
-      * [List Attached Volumes](#list-attached-volumes)
-      * [Attach a Volume](#attach-a-volume)
-      * [Retrieve an Attached Volume](#retrieve-an-attached-volume)
-      * [Detach a Volume](#detach-a-volume)
-      * [List Attached CD-ROMs](#list-attached-cd-roms)
-      * [Attach a CD-ROM](#attach-a-cd-rom)
-      * [Retrieve an Attached CD-ROM](#retrieve-an-attached-cd-rom)
-      * [Detach a CD-ROM](#detach-a-cd-rom)
-      * [Reboot a Server](#reboot-a-server)
-      * [Start a Server](#start-a-server)
-      * [Stop a Server](#stop-a-server)
+        * [List Servers](#list-servers)
+        * [Retrieve a Server](#retrieve-a-server)
+        * [Create a Server](#create-a-server)
+        * [Update a Server](#update-a-server)
+        * [Delete a Server](#delete-a-server)
+        * [List Attached Volumes](#list-attached-volumes)
+        * [Attach a Volume](#attach-a-volume)
+        * [Retrieve an Attached Volume](#retrieve-an-attached-volume)
+        * [Detach a Volume](#detach-a-volume)
+        * [List Attached CD-ROMs](#list-attached-cd-roms)
+        * [Attach a CD-ROM](#attach-a-cd-rom)
+        * [Retrieve an Attached CD-ROM](#retrieve-an-attached-cd-rom)
+        * [Detach a CD-ROM](#detach-a-cd-rom)
+        * [Reboot a Server](#reboot-a-server)
+        * [Start a Server](#start-a-server)
+        * [Stop a Server](#stop-a-server)
     * [Images](#images)
-      * [List Images](#list-images)
-      * [Get an Image](#get-an-image)
-      * [Update an Image](#update-an-image)
-      * [Delete an Image](#delete-an-image)
+        * [List Images](#list-images)
+        * [Get an Image](#get-an-image)
+        * [Update an Image](#update-an-image)
+        * [Delete an Image](#delete-an-image)
     * [Volumes](#volumes)
-      * [List Volumes](#list-volumes)
-      * [Get a Volume](#get-a-volume)
-      * [Create a Volume](#create-a-volume)
-      * [Update a Volume](#update-a-volume)
-      * [Delete a Volume](#delete-a-volume)
-      * [Create a Volume Snapshot](#create-a-volume-snapshot)
-      * [Restore a Volume Snapshot](#restore-a-volume-snapshot)
+        * [List Volumes](#list-volumes)
+        * [Get a Volume](#get-a-volume)
+        * [Create a Volume](#create-a-volume)
+        * [Update a Volume](#update-a-volume)
+        * [Delete a Volume](#delete-a-volume)
+        * [Create a Volume Snapshot](#create-a-volume-snapshot)
+        * [Restore a Volume Snapshot](#restore-a-volume-snapshot)
     * [Snapshots](#snapshots)
-      * [List Snapshots](#list-snapshots)
-      * [Get a Snapshot](#get-a-snapshot)
-      * [Update a Snapshot](#update-a-snapshot)
-      * [Delete a Snapshot](#delete-a-snapshot)
+        * [List Snapshots](#list-snapshots)
+        * [Get a Snapshot](#get-a-snapshot)
+        * [Update a Snapshot](#update-a-snapshot)
+        * [Delete a Snapshot](#delete-a-snapshot)
     * [IP Blocks](#ip-blocks)
-    * [List IP Blocks](#list-ip-blocks)
-      * [Get an IP Block](#get-an-ip-block)
-      * [Create an IP Block](#create-an-ip-block)
-      * [Delete an IP Block](#delete-an-ip-block)
+        * [List IP Blocks](#list-ip-blocks)
+        * [Get an IP Block](#get-an-ip-block)
+        * [Create an IP Block](#create-an-ip-block)
+        * [Delete an IP Block](#delete-an-ip-block)
     * [LANs](#lans)
-      * [List LANs](#list-lans)
-      * [Create a LAN](#create-a-lan)
-      * [Get a LAN](#get-a-lan)
-      * [Update a LAN](#update-a-lan)
-      * [Delete a LAN](#delete-a-lan)
+        * [List LANs](#list-lans)
+        * [Create a LAN](#create-a-lan)
+        * [Get a LAN](#get-a-lan)
+        * [Update a LAN](#update-a-lan)
+        * [Delete a LAN](#delete-a-lan)
     * [Network Interfaces (NICs)](#network-interfaces)
-      * [List NICs](#list-nics)
-      * [Get a NIC](#get-a-nic)
-      * [Create a NIC](#create-a-nic)
-      * [Update a NIC](#update-a-nic)
-      * [Delete a NIC](#delete-a-nic)
+        * [List NICs](#list-nics)
+        * [Get a NIC](#get-a-nic)
+        * [Create a NIC](#create-a-nic)
+        * [Update a NIC](#update-a-nic)
+        * [Delete a NIC](#delete-a-nic)
     * [Firewall Rules](#firewall-rules)
-      * [List Firewall Rules](#list-firewall-rules)
-      * [Get a Firewall Rule](#get-a-firewall-rule)
-      * [Create a Firewall Rule](#create-a-firewall-rule)
-      * [Update a Firewall Rule](#update-a-firewall-rule)
-      * [Delete a Firewall Rule](#delete-a-firewall-rule)
+        * [List Firewall Rules](#list-firewall-rules)
+        * [Get a Firewall Rule](#get-a-firewall-rule)
+        * [Create a Firewall Rule](#create-a-firewall-rule)
+        * [Update a Firewall Rule](#update-a-firewall-rule)
+        * [Delete a Firewall Rule](#delete-a-firewall-rule)
     * [Load Balancers](#load-balancers)
-      * [List Load Balancers](#list-load-balancers)
-      * [Get a Load Balancer](#get-a-load-balancer)
-      * [Create a Load Balancer](#create-a-load-balancer)
-      * [Update a Load Balancer](#update-a-load-balancer)
-      * [List Load Balanced NICs](#list-load-balanced-nics)
-      * [Get a Load Balanced NIC](#get-a-load-balanced-nic)
-      * [Associate NIC to a Load Balancer](#associate-nic-to-a-load-balancer)
-      * [Remove a NIC Association](#remove-a-nic-association)
+        * [List Load Balancers](#list-load-balancers)
+        * [Get a Load Balancer](#get-a-load-balancer)
+        * [Create a Load Balancer](#create-a-load-balancer)
+        * [Update a Load Balancer](#update-a-load-balancer)
+        * [List Load Balanced NICs](#list-load-balanced-nics)
+        * [Get a Load Balanced NIC](#get-a-load-balanced-nic)
+        * [Associate NIC to a Load Balancer](#associate-nic-to-a-load-balancer)
+        * [Remove a NIC Association](#remove-a-nic-association)
     * [Requests](#requests)
-      * [List Requests](#list-requests)
-      * [Get a Request](#get-a-request)
-      * [Get a Request Status](#get-a-request-status)
+        * [List Requests](#list-requests)
+        * [Get a Request](#get-a-request)
+        * [Get a Request Status](#get-a-request-status)
 * [Examples](#examples)
 * [Support](#support)
 * [Testing](#testing)
@@ -112,7 +112,7 @@ The official .NET library is available from the [ProfitBricks GitHub account](ht
 
 Or you can add the SDK by using `nuget`:
 
-	Install-Package ProfitBricksSDK
+    Install-Package ProfitBricksSDK
 
 ### Authenticating
 
@@ -143,7 +143,7 @@ You can choose to read them from the environment variables as in the example abo
 
 You can now create an instance of any API class and pass the Configuration property for any future request.
 
-	 LocationApi locApi = new LocationApi(Configuration);
+    LocationApi locApi = new LocationApi(Configuration);
 
 ## Reference
 
@@ -228,7 +228,7 @@ Call the `Create` method and pass in the `datacenter` object:
 
     datacenter = dcApi.Create(datacenter);
 
-##### Data Center Object Reference
+#### Data Center Object Reference
 
 **Datacenter Object Properties**
 
@@ -255,10 +255,10 @@ These `DatacenterEntities` may also be supplied:
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
-| Servers | no | Servers | An array containing one or more Server ojbects. See [create a server](#create-a-server). |
+| Servers | no | Servers | An array containing one or more Server objects. See [create a server](#create-a-server). |
 | Volumes | no | Volumes | An array containing one or more Volume objects. See [create a volume](#create-a-volume). |
 | Lans | no | Lans | An array containing one or more Lan objects. See [create a lan](#create-a-lan). |
-| Loadbalancers | no | Loadbalancers | An array containing one or more Loadbalancer objects. See [create a load balancer](#create-a-load- balancer). |
+| Loadbalancers | no | Loadbalancers | An array containing one or more Loadbalancer objects. See [create a load balancer](#create-a-load-balancer). |
 
 ---
 
@@ -394,7 +394,7 @@ Call the `Create` method and pass in the arguments including the `server` object
 
     serverApi.Create(DatacenterId, server);
 
-##### Server Object Reference
+#### Server Object Reference
 
 **Server Object Properties**
 
@@ -761,7 +761,7 @@ Call the `Create` method and pass in the arguments including the `volume` object
 
     volume = volumeApi.Create(DatacenterId, volume);
 
-##### Volume Object Reference
+#### Volume Object Reference
 
 **Volume Object Properties**
 
@@ -802,11 +802,11 @@ Call the `Create` method and pass in the arguments including the `volume` object
 
 #### Update a Volume
 
-Various attributes on the volume can be updated (either in full or partially) although the following restrictions apply: 
+Various attributes on the volume can be updated (either in full or partially) although the following restrictions apply:
 
 * The size of an existing storage volume can be increased. It cannot be reduced.
-* The volume size will be increased without requiring a reboot if the relevant hot plug settings have been set to `true`. 
-* The additional capacity is not added automatically added to any partition, therefore you will need to handle that inside the OS afterwards. 
+* The volume size will be increased without requiring a reboot if the relevant hot plug settings have been set to `true`.
+* The additional capacity is not added automatically added to any partition, therefore you will need to handle that inside the OS afterwards.
 * After you have increased the volume size you cannot decrease the volume size.
 
 Since an existing volume is being modified, none of the request arguments are specifically required as long as the changes being made satisfy the requirements for creating a volume.
@@ -1020,7 +1020,7 @@ Call the `Create` method and pass in the `ipBlock` object:
 
     ipBlock = ipApi.Create(ipBlock);
 
-##### IpBlock Object Reference
+#### IpBlock Object Reference
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -1109,7 +1109,7 @@ Declare a `Lan` object and assign the relevant properties:
 
 Call the `Create` method and pass in the arguments including the `lan` object:
 
-##### Lan Object Reference
+#### Lan Object Reference
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -1239,7 +1239,7 @@ Call the `Create` method and pass in the arguments including the `nic` object:
 
     nic = nicApi.Create(DatacenterId, ServerId, nic);
 
-##### Nic Object Reference
+#### Nic Object Reference
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -1255,9 +1255,9 @@ Call the `Create` method and pass in the arguments including the `nic` object:
 
 #### Update a NIC
 
-Various attributes on the volume can be updated (either in full or partially) although the following restrictions apply: 
+Various attributes on the volume can be updated (either in full or partially) although the following restrictions apply:
 
-* The primary address of a NIC connected to a load balancer can only be changed by changing the IP address of the load balancer. 
+* The primary address of a NIC connected to a load balancer can only be changed by changing the IP address of the load balancer.
 * You can also add additional reserved, public IP addresses to the NIC.
 
 The user can specify and assign private IP addresses manually. Valid IP addresses for private networks are 10.0.0.0/8, 172.16.0.0/12 or 192.168.0.0/16.
@@ -1363,7 +1363,7 @@ Call the `Create` method and pass in the arguments including the `fw` object:
 
     fw = fwApi.Create(DatacenterId, ServerId, NicId, fw);
 
-##### Firewall Object Reference
+#### Firewall Object Reference
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -1487,7 +1487,7 @@ Call the `Create` method and pass in the arguments including the `lb` object:
 
     lb = lbApi.Create(DatacenterId, lb);
 
-##### Loadbalancer Object Resource
+#### Loadbalancer Object Resource
 
 | Name| Required | Type | Description |
 |---|:-:|---|---|
@@ -1739,7 +1739,7 @@ One of the unique features of the ProfitBricks platform is that it allows you to
 
 ### Update Cores, Memory, and Disk
 
-ProfitBricks allows users to dynamically update cores and memory independently of each other. This means that you do not have to upgrade to the larger size in order to increase memory. You can simply increase the instance's memory, which keeps your costs in line with your resource needs. 
+ProfitBricks allows users to dynamically update cores and memory independently of each other. This means that you do not have to upgrade to the larger size in order to increase memory. You can simply increase the instance's memory, which keeps your costs in line with your resource needs.
 
 This example updates cores and memory:
 
@@ -1769,8 +1769,8 @@ This example creates a new 40 GB volume:
 
 **Notes:**
 
-* The value supplied for `Image` is an example and is unlikely to be valid. 
-* ProfitBricks supplies a number of different images for various operating systems. These images are updated from time to time and these updates often result in a new UUID being issued. 
+* The value supplied for `Image` is an example and is unlikely to be valid.
+* ProfitBricks supplies a number of different images for various operating systems. These images are updated from time to time and these updates often result in a new UUID being issued.
 * The .NET SDK can help you to locate valid image IDs. There are also [CLI](https://devops.profitbricks.com/tools/cli) and [PowerShell](https://devops.profitbricks.com/tools/powershell) tools available on [DevOps Central](https://devops.profitbricks.com/tools/) which can help you find the currently available UUIDs.
 * The value supplied for `Type` can be set to "HDD" or "SSD", depending on what storage type you want to use.
 * Either `ImagePassword` or `SshKeys` needs to be set for volumes. It is possible to set both, however, `SshKeys` are only applicable to Linux images. Therefore you **MUST** provide an `ImagePassword` when creating volumes based on a Microsoft Windows Image.
