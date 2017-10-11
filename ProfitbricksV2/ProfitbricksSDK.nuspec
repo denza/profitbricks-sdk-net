@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>ProfitbricksSDK</id>
-    <version>4.1.0</version>
+    <version>4.1.1</version>
     <title>ProfitBricksSDK</title>
     <authors>Profitbricks</authors>
     <owners>Profitbricks</owners>
@@ -18,4 +18,7 @@
       <dependency id="RestSharp" version="105.2.3" />
     </dependencies>
   </metadata>
+  <files>
+	<file src="\bin\Release\ProfitBricksSDK.dll" target="lib\net45" />
+  </files>
 </package>
