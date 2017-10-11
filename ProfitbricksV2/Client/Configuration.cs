@@ -244,7 +244,7 @@ namespace Client
         /// <summary>
         /// Gets or sets additional agent information when a tool using SDK needs to be recognized
         /// </summary>
-        public string UsedBy { get; private set; }
+        public string UsedBy { get; set; }
 
         /// <summary>
         /// Returns a string with essential information for debugging.
